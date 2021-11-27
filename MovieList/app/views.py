@@ -3,13 +3,58 @@
 from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
-from app.models import Assessment
-from .forms import AssessmentForm, IdTypeForm
+from app.models import User
+from .forms import UserForm
+from flask_login import login_required, current_user
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
 	home={'description':'Welcome to MovieList!'}
 	return render_template('home.html', title='Home', home=home)
+
+@app.route('/login')
+def login():
+	return 'Login'
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+	form = UserForm()
+	if form.validate_on_submit():
+		flash('Succesfully signed up!')
+	if request.method == "POST":
+		try:
+			new_user = User(name=form.name.data, email=form.email.data, password=form.password.data)
+			db.session.add(new_user)
+			db.session.commit()
+			return redirect('/signup')
+		except:
+			return render_template('signup.html',
+						title='Sign Up',
+						form=form)
+	else:
+		return render_template('signup.html',
+							title='Sign Up',
+							form=form)
+
+@app.route('/profile')
+def profile():
+	return 'Profile'
+
+# @app.route('/profile')
+# @login_required
+# def profile():
+#     return render_template('profile.html', name=current_user.name)
+
+@app.route('/logout')
+def logout():
+    return 'Logout'
+
+# @app.route('/logout')
+# @login_required
+# def logout():
+#     logout_user()
+#     return redirect(url_for('main.index'))
+
 
 # @app.route('/all_assessments', methods=['GET', 'POST'])
 # def all_assessments():
