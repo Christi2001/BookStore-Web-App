@@ -4,63 +4,61 @@ from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
 from app.models import User
-from .forms import UserForm
-from flask_login import login_required, current_user
+from .forms import SignupForm, LoginForm
+from flask_login import login_required, current_user, login_user, logout_user
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
 	home={'description':'Welcome to MovieList!'}
 	return render_template('home.html', title='Home', home=home)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-	return 'Login'
+	form = LoginForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		if user:
+			if user.password == form.password.data:
+				login_user(user)
+				flash("Login Successful!")
+				return redirect('/profile')
+			else:
+				flash("Wrong Password! Try again!")
+				return render_template('login.html', title='Login', form=form)
+		else:
+			flash("Invalid email! Try again!")
+			return render_template('login.html', title='Login', form=form)
+	else:
+		return render_template('login.html', title='Login', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-	form = UserForm()
+	form = SignupForm()
 	if form.validate_on_submit():
-		try:
-			users = User.query
-			for user in users:
-				if form.email.data == user.email:
-					error = 'Email already in use! Please enter a different one!'
-					return render_template('signup.html',
-						title='Sign Up',
-						form=form,
-						error=error)
-			new_user = User(name=form.name.data, email=form.email.data, password=form.password.data)
-			db.session.add(new_user)
-			db.session.commit()
-			flash('Succesfully signed up!')
-			return redirect('/')
-		except:
-			return render_template('signup.html',
-						title='Sign Up',
-						form=form)
+		users = User.query
+		for user in users:
+			if form.email.data == user.email:
+				error = 'Email already in use! Please enter a different one!'
+				return render_template('signup.html', title='Sign Up', form=form, error=error)
+		new_user = User(name=form.name.data, email=form.email.data, password=form.password.data)
+		db.session.add(new_user)
+		db.session.commit()
+		flash('Succesfully signed up!')
+		return redirect('/')
 	else:
-		return render_template('signup.html',
-							title='Sign Up',
-							form=form)
+		return render_template('signup.html', title='Sign Up', form=form)
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
-	return 'Profile'
+	return render_template('profile.html')
 
-# @app.route('/profile')
-# @login_required
-# def profile():
-#     return render_template('profile.html', name=current_user.name)
-
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
 def logout():
-    return 'Logout'
-
-# @app.route('/logout')
-# @login_required
-# def logout():
-#     logout_user()
-#     return redirect(url_for('main.index'))
+	logout_user()
+	flash("You've been successfully logged out!")
+	return redirect('/')
 
 
 # @app.route('/all_assessments', methods=['GET', 'POST'])

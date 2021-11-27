@@ -8,7 +8,11 @@ from wtforms.fields.html5 import EmailField
 from wtforms import PasswordField
 from wtforms.validators import DataRequired
 
-class UserForm(Form):
+class SignupForm(Form):
     name = TextField('name', validators=[DataRequired()])
+    email = EmailField('email', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+
+class LoginForm(Form):
     email = EmailField('email', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
