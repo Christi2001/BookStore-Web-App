@@ -20,13 +20,20 @@ def login():
 def signup():
 	form = UserForm()
 	if form.validate_on_submit():
-		flash('Succesfully signed up!')
-	if request.method == "POST":
 		try:
+			users = User.query
+			for user in users:
+				if form.email.data == user.email:
+					error = 'Email already in use! Please enter a different one!'
+					return render_template('signup.html',
+						title='Sign Up',
+						form=form,
+						error=error)
 			new_user = User(name=form.name.data, email=form.email.data, password=form.password.data)
 			db.session.add(new_user)
 			db.session.commit()
-			return redirect('/signup')
+			flash('Succesfully signed up!')
+			return redirect('/')
 		except:
 			return render_template('signup.html',
 						title='Sign Up',

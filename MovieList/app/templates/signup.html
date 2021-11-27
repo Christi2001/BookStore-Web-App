@@ -8,6 +8,12 @@
 <div class="border rounded border-primary p-5">
     <form action="/signup" method="post" name="users">
         {{ form.hidden_tag() }}
+        {% if error %}
+        <div class="row">
+            <div class="col-2"> </div>
+            <div class="alert alert-danger col-10" role="alert"> {{ error }} </div>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-2"><h4>Name: </h4></div>
             <div class="col">
@@ -63,7 +69,9 @@
     <br/>
     <div class="row">
         <div class="col-2"></div>
-        <div>Already have an account? Click <a href="/login">here</a> to login!</div>
+        <div class="col">
+            <h5>Already have an account? Click <a href="/login">here</a> to login!</h5>
+        </div>
     </div>
 </div>
 {% endblock %}
