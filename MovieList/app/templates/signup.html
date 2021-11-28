@@ -5,71 +5,47 @@
 <br/>
 <h1 class="row justify-content-md-center">Create Account</h1>
 <br/>
-<div class="border rounded border-primary p-5">
-    <form action="/signup" method="post" name="users">
-        {{ form.hidden_tag() }}
-        {% if error %}
-        <div class="row">
-            <div class="col-2"> </div>
-            <div class="alert alert-danger col-10" role="alert"> {{ error }} </div>
-        </div>
-        {% endif %}
-        <div class="row">
-            <div class="col-2"><h4>Name: </h4></div>
-            <div class="col">
+<div class="row">
+    <div class="col-4"></div>
+    <div class="border rounded border-primary p-5 col-4">
+        <form action="/signup" method="post" name="users">
+            {{ form.hidden_tag() }}
+            {% if em_error %}
+                <div class="alert alert-danger row" role="alert">
+                    {{ em_error }}
+                </div>
+            {% endif %}
+            {% for error in form.password_hash.errors %}
+                <div class="alert alert-danger row" role="alert">
+                    Passwords do not match! Try again!
+                </div>
+            {% endfor %}
+            <div class="row"><h4>Name: </h4></div>
+            <div class="row">
                 {{ form.name(class_='form-control', placeholder='Enter your name') }}
             </div>
-        </div>
-        {% for error in form.name.errors %}
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="alert alert-danger col-10" role="alert">
-                [{{ error }}]
-            </div>
-        </div>
-        {% endfor %}
-        <br/>
-        <div class="row">
-            <div class="col-2"><h4>Email: </h4></div>
-            <div class="col">
+            <br/>
+            <div class="row"><h4>Email: </h4></div>
+            <div class="row">
                 {{ form.email(class_='form-control', placeholder='Enter your email') }}
             </div>
-        </div>
-        {% for error in form.email.errors %}
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="alert alert-danger col-10" role="alert">
-            [{{ error }}]
+            <br/>
+            <div class="row"><h4>Password: </h4></div>
+            <div class="row">
+                {{ form.password_hash(class_='form-control', placeholder='Enter your password') }}
             </div>
-        </div>
-        {% endfor %}
+            <br/>
+            <div class="row"><h4>Confirm Password: </h4></div>
+            <div class="row">
+                {{ form.password_hash2(class_='form-control', placeholder='Re-enter your password') }}
+            </div>
+            <br/>
+            <div class= "row">
+                <input type="submit" class="btn btn-primary col" value="Sign Up">
+            </div>
+        </form>
         <br/>
         <div class="row">
-            <div class="col-2"><h4>Password: </h4></div>
-            <div class="col">
-                {{ form.password(class_='form-control', placeholder='Enter your password') }}
-            </div>
-        </div>
-        {% for error in form.password.errors %}
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="alert alert-danger col-10" role="alert">
-                [{{ error }}]
-            </div>
-        </div>
-        {% endfor %}
-        <br/>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class= "col">
-                <input type="submit" class="btn btn-primary" value="Sign Up">
-            </div>
-        </div>
-    </form>
-    <br/>
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col">
             <h5>Already have an account? Click <a href="/login">here</a> to login!</h5>
         </div>
     </div>

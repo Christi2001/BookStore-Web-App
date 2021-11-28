@@ -6,6 +6,7 @@ from app import app, db
 from app.models import User
 from .forms import SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -18,16 +19,16 @@ def login():
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=form.email.data).first()
 		if user:
-			if user.password == form.password.data:
+			if check_password_hash(user.password_hash, form.password.data):
 				login_user(user)
 				flash("Login Successful!")
 				return redirect('/profile')
 			else:
-				flash("Wrong Password! Try again!")
-				return render_template('login.html', title='Login', form=form)
+				pw_error = 'Wrong Password! Try again!'
+				return render_template('login.html', title='Login', form=form, pw_error=pw_error)
 		else:
-			flash("Invalid email! Try again!")
-			return render_template('login.html', title='Login', form=form)
+			em_error = 'Invalid email! Try again!'
+			return render_template('login.html', title='Login', form=form, em_error=em_error)
 	else:
 		return render_template('login.html', title='Login', form=form)
 
@@ -38,12 +39,14 @@ def signup():
 		users = User.query
 		for user in users:
 			if form.email.data == user.email:
-				error = 'Email already in use! Please enter a different one!'
-				return render_template('signup.html', title='Sign Up', form=form, error=error)
-		new_user = User(name=form.name.data, email=form.email.data, password=form.password.data)
+				em_error = 'Email already in use! Please enter a different one!'
+				return render_template('signup.html', title='Sign Up', form=form, em_error=em_error)
+		hashed_password = generate_password_hash(form.password_hash.data, "sha256")
+		new_user = User(name=form.name.data, email=form.email.data, password_hash=hashed_password)
 		db.session.add(new_user)
 		db.session.commit()
 		flash('Succesfully signed up!')
+		login_user(user)
 		return redirect('/')
 	else:
 		return render_template('signup.html', title='Sign Up', form=form)
