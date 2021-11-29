@@ -1,0 +1,48 @@
+<!-- pw_change.html -->
+
+{% extends "base.html" %}
+{% block content %}
+<br/>
+<h1 class="row justify-content-md-center">Change Password</h1>
+<br/>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="border rounded border-primary p-5 col-4">
+        <form action="/pw_change" method="post" name="change_password">
+            {{ form.hidden_tag() }}
+            {% for error in form.new_password_hash.errors %}
+                <div class="alert alert-danger row" role="alert">
+                    Passwords do not match! Try again!
+                </div>
+            {% endfor %}
+            {% if old_pw_error %}
+                <div class="alert alert-danger row" role="alert">
+                    {{ old_pw_error }}
+                </div>
+            {% endif %}
+            <div class="row"><h4>Old Password: </h4></div>
+            <div class="row">
+                {{ form.old_password(class_='form-control', placeholder='Enter your old password') }}
+            </div>
+            <br/>
+            <div class="row"><h4>New Password: </h4></div>
+            <div class="row">
+                {{ form.new_password_hash(class_='form-control', placeholder='Enter your new password') }}
+            </div>
+            <br/>
+            <div class="row"><h4>Confirm New Password: </h4></div>
+            <div class="row">
+                {{ form.new_password_hash2(class_='form-control', placeholder='Re-enter your new password') }}
+            </div>
+            <br/>
+            <div class="row">
+                <input type="submit" class="btn btn-primary col" value="Change Password">
+            </div>
+            <br/>
+            <div class="row">
+                <a href="/profile" class="btn btn-danger col">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

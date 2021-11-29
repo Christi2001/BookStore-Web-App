@@ -5,7 +5,14 @@
 <br/>
 <h1 class="row justify-content-md-center">Profile</h1>
 <br/>
-<div class="border border-primary rounded p-3">
-    <h4>You are logged in!</h4>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="border border-primary rounded p-3 col-4">
+        <h4>Hello, {{ current_user.name }}!</h4>
+        <a href="/pw_change" class="btn btn-primary col">Change Password</a>
+        <br/>
+        <br/>
+        <a href="/delete_account" class="btn btn-danger col">Delete Account</a>
+    </div>
 </div>
 {% endblock %}

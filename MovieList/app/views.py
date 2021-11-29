@@ -4,7 +4,7 @@ from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
 from app.models import User
-from .forms import SignupForm, LoginForm
+from .forms import ChangePasswordForm, SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -54,7 +54,36 @@ def signup():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-	return render_template('profile.html')
+	return render_template('profile.html', title=current_user.name)
+
+@app.route('/pw_change', methods=['GET', 'POST'])
+@login_required
+def pw_change():
+	form = ChangePasswordForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=current_user.email).first()
+		if check_password_hash(user.password_hash, form.old_password.data):
+			user.password_hash = generate_password_hash(form.new_password_hash.data, "sha256")
+			db.session.commit()
+			flash('Successfully changed password!')
+			return redirect('/profile')
+		else:
+			old_pw_error = 'Old password is incorrect! Try again!'
+			return render_template('pw_change.html',title='Change Password', form=form, old_pw_error=old_pw_error)
+	else:
+		return render_template('pw_change.html',title='Change Password', form=form)
+
+@app.route('/delete_account', methods=['GET', 'POST'])
+@login_required
+def delete_account():
+	user = User.query.filter_by(email=current_user.email).first()
+	if user:
+		logout_user()
+		db.session.delete(user)
+		db.session.commit()
+		flash("You've successfully deleted your account!")
+		redirect('/signup')
+	return redirect('/')
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
