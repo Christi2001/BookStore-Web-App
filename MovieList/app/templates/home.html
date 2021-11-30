@@ -4,9 +4,28 @@
 {% block content %}
 
 <br/>
-<h1>Home</h1>
+<h1>{{ home.description }}</h1>
 <br/>
-<div class="border border-primary rounded p-3">
-    <h4>{{home.description}}</h4>
-</div>
+{% if rows > 0 %}
+{% for movie in movies %}
+    <div class="row border border-primary rounded p-3">
+        <img class="col-md-2" src="{{ url_for('static', filename=movie.photo) }}">
+        <div class="col-2">
+            <h3>{{ movie.title }} ({{ movie.year }})</h3>
+            <!-- {% if current_user.is_authenticated %}
+                
+            {% endif %} -->
+        </div>
+        <div class="col-1"></div>
+        <div class="col-6">
+            <a><strong>Description:</strong><br/> {{ movie.description }}</a>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <br/>
+{% endfor %}
+{% else %}
+    <!-- if there are no assingments, display the following message -->
+    <h4>There are no movies added!</h4>
+{% endif %}
 {% endblock %}

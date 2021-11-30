@@ -19,6 +19,6 @@ from app.models import User
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 
 from app import views, models

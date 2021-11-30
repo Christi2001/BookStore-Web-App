@@ -27,6 +27,7 @@
           <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="/search">Search</a></li>
           {% if current_user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="/add_movie">Add Movie</a></li>
           <li class="nav-item"><a class="nav-link" href="/watched">Watched</a></li>
           <li class="nav-item"><a class="nav-link" href="/my_watchlist">My Watchlist</a></li>
           {% endif %}

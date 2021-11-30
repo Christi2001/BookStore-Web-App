@@ -1,10 +1,12 @@
 # forms.py
 
+from werkzeug.utils import validate_arguments
 from flask_wtf import Form
 from wtforms import TextField
+from wtforms import TextAreaField
 from wtforms.fields.html5 import EmailField
-# from wtforms import IntegerField
-# from wtforms import StringField
+from wtforms import IntegerField
+from wtforms import StringField
 from wtforms import PasswordField
 from wtforms.validators import DataRequired, EqualTo, Length
 
@@ -22,3 +24,9 @@ class ChangePasswordForm(Form):
     old_password = PasswordField('old_password', validators=[DataRequired()])
     new_password_hash = PasswordField('new_password_hash', validators=[DataRequired(), EqualTo('new_password_hash2')])
     new_password_hash2 = PasswordField('new_password_hash2', validators=[DataRequired()])
+
+class MovieForm(Form):
+    title = TextField('title', validators=[DataRequired()])
+    photo = StringField('photo', validators=[DataRequired()])
+    year = IntegerField('year', validators=[DataRequired()])
+    description = TextAreaField('description', validators=[DataRequired()])

@@ -3,16 +3,52 @@
 from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
-from app.models import User
-from .forms import ChangePasswordForm, SignupForm, LoginForm
+from app.models import User, Movie
+from .forms import ChangePasswordForm, MovieForm, SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
 	home={'description':'Welcome to MovieList!'}
-	return render_template('home.html', title='Home', home=home)
+	movies = Movie.query
+	rows = movies.count()
+	return render_template('home.html', title='Home', home=home, movies=movies, rows=rows)
 
+# Movie management views
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+	return 'Search'
+
+@app.route('/add_movie', methods=['GET', 'POST'])
+@login_required
+def add_movie():
+	form = MovieForm()
+	if form.validate_on_submit():
+		new_movie = Movie(title=form.title.data, photo=form.photo.data, year=form.year.data, description=form.description.data)
+		movies = Movie.query
+		for movie in movies:
+			if movie.title == new_movie.title and movie.year == new_movie.year:
+				flash('That movie has already been added!')
+				return redirect('/add_movie')
+		db.session.add(new_movie)
+		db.session.commit()
+		flash('Succesfully added movie!')
+		return redirect('/add_movie')
+	else:
+		return render_template('add_movie.html', title='Add movie', form=form)
+
+@app.route('/watched', methods=['GET', 'POST'])
+@login_required
+def watched():
+	return 'Watched'
+
+@app.route('/my_watchlist', methods=['GET', 'POST'])
+@login_required
+def my_watchlist():
+	return 'My Watchlist'
+
+# Account related views
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	form = LoginForm()
@@ -22,7 +58,7 @@ def login():
 			if check_password_hash(user.password_hash, form.password.data):
 				login_user(user)
 				flash("Login Successful!")
-				return redirect('/profile')
+				return redirect('/')
 			else:
 				pw_error = 'Wrong Password! Try again!'
 				return render_template('login.html', title='Login', form=form, pw_error=pw_error)
@@ -46,7 +82,7 @@ def signup():
 		db.session.add(new_user)
 		db.session.commit()
 		flash('Succesfully signed up!')
-		login_user(user)
+		login_user(new_user)
 		return redirect('/')
 	else:
 		return render_template('signup.html', title='Sign Up', form=form)
