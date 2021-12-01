@@ -30,3 +30,11 @@ class MovieForm(Form):
     photo = StringField('photo', validators=[DataRequired()])
     year = IntegerField('year', validators=[DataRequired()])
     description = TextAreaField('description', validators=[DataRequired()])
+
+class WatchlistForm(Form):
+    id = IntegerField('id')
+    status = StringField('status')
+
+class RatingForm(Form):
+    id = IntegerField('id')
+    rating = IntegerField('rating', validators=[DataRequired()])

@@ -3,17 +3,53 @@
 from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
-from app.models import User, Movie
-from .forms import ChangePasswordForm, MovieForm, SignupForm, LoginForm
+from app.models import Association, User, Movie
+from .forms import ChangePasswordForm, MovieForm, RatingForm, SignupForm, LoginForm, WatchlistForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-	home={'description':'Welcome to MovieList!'}
 	movies = Movie.query
 	rows = movies.count()
-	return render_template('home.html', title='Home', home=home, movies=movies, rows=rows)
+	if current_user.is_authenticated:
+		watchlist_form = WatchlistForm()
+		associations = Association.query
+		user = User.query.filter_by(email=current_user.email).first()
+		default = 0
+		if request.method == "POST":
+			if watchlist_form.status.data == 'watched':
+				assoc = Association(watched=1)
+				movie = Movie.query.filter_by(id=watchlist_form.id.data).first()
+				if movie:
+					assoc.movie = movie
+					user.movies.append(assoc)
+					db.session.add(assoc)
+					db.session.commit()
+					flash("Successfully added the movie to watched!")
+					return render_template('home.html', title='Home', movies=movies, default=default,
+			rows=rows, user=user, associations=associations, watchlist_form=watchlist_form)
+				else:
+					flash("Couldn't find that movie!")
+					return redirect('/')
+			elif watchlist_form.status.data == 'not_watched':
+				assoc = Association(watched=0)
+				movie = Movie.query.filter_by(id=watchlist_form.id.data).first()
+				if movie:
+					assoc.movie = movie
+					user.movies.append(assoc)
+					db.session.add(assoc)
+					db.session.commit()
+					flash("Successfully removed the movie from watched!")
+					return redirect('/')
+				else:
+					flash("Couldn't find that movie!")
+					return redirect('/')
+		else:
+			return render_template('home.html', title='Home', movies=movies, default=default,
+			rows=rows, user=user, associations=associations, watchlist_form=watchlist_form)
+	else:
+		return render_template('home.html', title='Home', movies=movies, rows=rows)
 
 # Movie management views
 @app.route('/search', methods=['GET', 'POST'])
@@ -23,20 +59,24 @@ def search():
 @app.route('/add_movie', methods=['GET', 'POST'])
 @login_required
 def add_movie():
-	form = MovieForm()
-	if form.validate_on_submit():
-		new_movie = Movie(title=form.title.data, photo=form.photo.data, year=form.year.data, description=form.description.data)
-		movies = Movie.query
-		for movie in movies:
-			if movie.title == new_movie.title and movie.year == new_movie.year:
-				flash('That movie has already been added!')
-				return redirect('/add_movie')
-		db.session.add(new_movie)
-		db.session.commit()
-		flash('Succesfully added movie!')
-		return redirect('/add_movie')
+	if current_user.email == 'sc20ccp@leeds.ac.uk': #only for admin
+		form = MovieForm()
+		if form.validate_on_submit():
+			new_movie = Movie(title=form.title.data, photo=form.photo.data, year=form.year.data, description=form.description.data)
+			movies = Movie.query
+			for movie in movies:
+				if movie.title == new_movie.title and movie.year == new_movie.year:
+					flash('That movie has already been added!')
+					return redirect('/add_movie')
+			db.session.add(new_movie)
+			db.session.commit()
+			flash('Succesfully added movie!')
+			return redirect('/add_movie')
+		else:
+			return render_template('add_movie.html', title='Add movie', form=form)
 	else:
-		return render_template('add_movie.html', title='Add movie', form=form)
+		flash('Only admin can add movies!')
+		return redirect('/')
 
 @app.route('/watched', methods=['GET', 'POST'])
 @login_required

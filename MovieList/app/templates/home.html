@@ -4,19 +4,44 @@
 {% block content %}
 
 <br/>
-<h1>{{ home.description }}</h1>
+<h1>Welcome to MovieList!</h1>
 <br/>
 {% if rows > 0 %}
 {% for movie in movies %}
     <div class="row border border-primary rounded p-3">
         <img class="col-md-2" src="{{ url_for('static', filename=movie.photo) }}">
-        <div class="col-2">
+        <div class="col-3">
             <h3>{{ movie.title }} ({{ movie.year }})</h3>
-            <!-- {% if current_user.is_authenticated %}
-                
-            {% endif %} -->
+            {% if current_user.is_authenticated %}
+                {% set default = 0 %}
+                {% for association in associations %}
+                    {% if association.movieId == movie.id %}
+                        {% if association.userId == user.id %}
+                            {% set default = 1 %}
+                        {% endif %}
+                    {% endif %}
+                    before: {{ default }}
+                {% endfor %}
+                after: {{ default }}
+                {% if default == 0 %}
+                    <a>Status: Not in Watchlist!</a>
+                    <br/><br/>
+                    <form action="" method="post" name="add_btn">
+                        {{ watchlist_form.id(value=movie.id, hidden=True) }}
+                        {{ watchlist_form.status(value='watched', hidden=True) }}
+                        <input type="submit" class="btn btn-success" value="Add to Watched!">
+                    </form>
+                {% else %}
+                    <a>Status: In Watchlist!</a>
+                    <br/><br/>
+                    <form action="" method="post" name="remove_btn">
+                        {{ watchlist_form.id(value=movie.id, hidden=True) }}
+                        {{ watchlist_form.status(value='not_watched', hidden=True) }}
+                        <input type="submit" class="btn btn-danger" value="Remove from Watched!">
+                    </form>
+                {% endif %}
+            {% endif %}
         </div>
-        <div class="col-1"></div>
         <div class="col-6">
             <a><strong>Description:</strong><br/> {{ movie.description }}</a>
         </div>
@@ -25,7 +50,6 @@
     <br/>
 {% endfor %}
 {% else %}
-    <!-- if there are no assingments, display the following message -->
     <h4>There are no movies added!</h4>
 {% endif %}
 {% endblock %}

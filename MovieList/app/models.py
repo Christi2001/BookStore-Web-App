@@ -10,7 +10,7 @@ class Association(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
     movieId = db.Column(db.Integer, db.ForeignKey('movie.id'))
-    userRating = db.Column(db.Integer)
+    rating = db.Column(db.Integer, default=-1)
     watched = db.Column(db.Boolean, default=False)
     user = db.relationship('User', back_populates='movies')
     movie = db.relationship('Movie', back_populates='users')
