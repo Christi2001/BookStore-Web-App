@@ -10,6 +10,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
     bookId = db.Column(db.Integer, db.ForeignKey('book.id'))
+    quantity = db.Column(db.Integer)
     user = db.relationship('User', back_populates='books')
     book = db.relationship('Book', back_populates='users')
 

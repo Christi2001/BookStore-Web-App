@@ -41,5 +41,9 @@ class BookForm(Form):
     stock = IntegerField('stock', validators=[DataRequired()])
     price = DecimalField('price', validators=[DataRequired()])
 
-class AddToBasketForm(Form):
-    id = IntegerField('id')
+class BasketForm(Form):
+    id = IntegerField('id', validators=[DataRequired()])
+    action = TextField('title', validators=[DataRequired()])
+
+class SearchForm(Form):
+    title = TextField('title', validators=[DataRequired()])

@@ -4,52 +4,9 @@ from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
 from app.models import Order, User, Book
-from .forms import AddToBasketForm, ChangePasswordForm, BookForm, SignupForm, LoginForm
+from .forms import BasketForm, ChangePasswordForm, BookForm, SearchForm, SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
-# @app.route('/', methods=['GET', 'POST'])
-# def home():
-# 	movies = Movie.query
-# 	rows = movies.count()
-# 	if current_user.is_authenticated:
-# 		watchlist_form = WatchlistForm()
-# 		associations = Association.query
-# 		user = User.query.filter_by(email=current_user.email).first()
-# 		default = 0
-# 		if request.method == "POST":
-# 			if watchlist_form.status.data == 'watched':
-# 				assoc = Association(watched=1)
-# 				movie = Movie.query.filter_by(id=watchlist_form.id.data).first()
-# 				if movie:
-# 					assoc.movie = movie
-# 					user.movies.append(assoc)
-# 					db.session.add(assoc)
-# 					db.session.commit()
-# 					flash("Successfully added the movie to watched!")
-# 					return render_template('home.html', title='Home', movies=movies, default=default,
-# 			rows=rows, user=user, associations=associations, watchlist_form=watchlist_form)
-# 				else:
-# 					flash("Couldn't find that movie!")
-# 					return redirect('/')
-# 			elif watchlist_form.status.data == 'not_watched':
-# 				assoc = Association(watched=0)
-# 				movie = Movie.query.filter_by(id=watchlist_form.id.data).first()
-# 				if movie:
-# 					assoc.movie = movie
-# 					user.movies.append(assoc)
-# 					db.session.add(assoc)
-# 					db.session.commit()
-# 					flash("Successfully removed the movie from watched!")
-# 					return redirect('/')
-# 				else:
-# 					flash("Couldn't find that movie!")
-# 					return redirect('/')
-# 		else:
-# 			return render_template('home.html', title='Home', movies=movies, default=default,
-# 			rows=rows, user=user, associations=associations, watchlist_form=watchlist_form)
-# 	else:
-# 		return render_template('home.html', title='Home', movies=movies, rows=rows)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -57,24 +14,81 @@ def home():
 	rows = books.count()
 	if current_user.is_authenticated:
 		user = User.query.filter_by(email=current_user.email).first()
-		form = AddToBasketForm()
-		if form.validate_on_submit():
-			book_to_add = Book.query.get(form.id.data)
-			if book_to_add:
-				order = Order()
-				order.book = book_to_add
-				user.books.append(order)
-				db.session.add(order)
+		form = BasketForm()
+		if request.method == "POST":
+			orders = Order.query
+			same_order = 0
+			for order in orders:
+				if order.userId == user.id and order.bookId == form.id.data:
+					current_order = order
+					current_book = Book.query.filter_by(id=form.id.data).first()
+					same_order = 1
+			if same_order == 1:
+				current_order.quantity += 1
+				if current_order.quantity > current_book.stock:
+					flash(current_book.stock)
+					flash("Not enough books in stock!")
+					return redirect('/')
 				db.session.commit()
+				flash(current_order.quantity)
 				flash("Successfully added the book to basket!")
 				return redirect('/')
 			else:
-				flash("Couldn't find that book!")
-				return redirect('/')
+				book_to_add = Book.query.get(form.id.data)
+				if book_to_add:
+					order = Order(quantity = 1)
+					order.book = book_to_add
+					user.books.append(order)
+					db.session.add(order)
+					db.session.commit()
+					flash("Successfully added the book to basket!")
+					return redirect('/')
+				else:
+					flash("Couldn't find that book!")
+					return redirect('/')
 		else:
 			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form)
 	else:
 		return render_template('home.html', title='Home', books=books, rows=rows)
+
+@app.route('/basket', methods=['GET', 'POST'])
+@login_required
+def basket():
+	user = User.query.filter_by(email=current_user.email).first()
+	user_orders = user.books
+	books = []
+	total = 0
+	form = BasketForm()
+	for user_order in user_orders:
+		book = Book.query.filter_by(id=user_order.bookId).first()
+		books.append(book)
+		total += user_order.quantity * book.price
+	total = round(total, 2)
+	rows = len(books)
+	if request.method == "POST":
+		orders = Order.query
+		for order in orders:
+			if order.userId == user.id and order.bookId == form.id.data:
+				current_order = order
+				current_book = Book.query.filter_by(id=form.id.data).first()
+		if form.action.data == 'minus':
+			current_order.quantity -= 1
+		elif form.action.data == 'plus':
+			current_order.quantity += 1
+			if current_order.quantity > current_book.stock:
+				flash(current_book.stock)
+				flash("Not enough books in stock!")
+				return redirect('/basket')
+		elif form.action.data == 'remove':
+			current_order.quantity = 0
+		if current_order.quantity == 0:
+			db.session.delete(current_order)
+		flash(current_order.quantity)
+		db.session.commit()
+		return redirect('/basket')
+	else:
+		return render_template('basket.html', title='Basket', rows=rows, books=books, 
+		form=form, user_orders=user_orders, total=total)
 
 # {% if current_user.is_authenticated %}
 # 	<form action="" method="post" name="add_btn">
@@ -110,15 +124,6 @@ def add_book():
 	else:
 		flash('Only admin can add book!')
 		return redirect('/')
-
-@app.route('/basket', methods=['GET', 'POST'])
-@login_required
-def basket():
-	user = User.query.filter_by(email=current_user.email).first()
-	books = Order.query.filter_by(userId=user.id).all()
-	# rows = books.count()
-	rows = 2
-	return render_template('basket.html', title='Basket', rows=rows, books=books)
 
 # Account related views
 @app.route('/login', methods=['GET', 'POST'])

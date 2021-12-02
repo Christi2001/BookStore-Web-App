@@ -7,30 +7,41 @@
 <h1>Welcome to BookStore!</h1>
 <br/>
 {% if rows > 0 %}
-{% for book in books %}
-    <div class="col-2 border border-danger rounded p-3">
-        <img class="col-md" src="{{ url_for('static', filename=book.photo) }}">
-        <div class="col">
-            <h3>{{ book.title }}</h3>
+<div class="row">
+    {% for book in books %}
+        <div class="col-2 border border-secondary rounded p-3 m-2">
+            <img class="col-md" src="{{ url_for('static', filename=book.photo) }}">
+            <div class="col">
+                <h3>{{ book.title }}</h3>
+            </div>
+            <div class="col">
+                <p>By {{ book.author }}</p>
+            </div>
+            <div class="col">
+                <p><strong>Genre:</strong> {{ book.category }}</p>
+            </div>
+            <div class="col">
+                <p><strong>Price:</strong> £{{ book.price }}</p>
+            </div>
+            {% if current_user.is_authenticated %}
+                {% if book.stock > 0 %}
+                    <div class="col">
+                        <form action="" method="post" name="add_btn">
+                            {{ form.id(value=book.id, hidden=True) }}
+                            <input type="submit" class="btn btn-success" value="Add to Basket!">
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="col">
+                        <p class="text-danger">Out of stock!</p>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
-        <div class="col">
-            <p>By {{ book.author }}</p>
-        </div>
-        <div class="col">
-            <a><strong>Price:</strong> £{{ book.price }}</a>
-        </div>
-        {% if current_user.is_authenticated %}
-        <div class="col">
-            <form action="" method="post" name="add_btn">
-                {{ form.id(value=book.id, hidden=True) }}
-                <input type="submit" class="btn btn-success" value="Add to Basket!">
-            </form>
-        </div>
-        {% endif %}
-    </div>
-    <br/>
-{% endfor %}
+        <br/>
+    {% endfor %}
+</div>
 {% else %}
-    <h4>There are no books added!</h4>
+<h4>There are no books added!</h4>
 {% endif %}
 {% endblock %}
