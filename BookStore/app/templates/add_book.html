@@ -1,0 +1,59 @@
+<!-- add_book.html -->
+
+{% extends "base.html" %}
+{% block content %}
+<br/>
+<h1 class="row justify-content-md-center">Add Book</h1>
+<br/>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="border rounded border-primary p-5 col-4">
+        <form action="/add_book" method="post" name="signup">
+            {{ form.hidden_tag() }}
+            <div class="row"><h4>Book's title: </h4></div>
+            <div class="row">
+                {{ form.title(class_='form-control', placeholder='Enter the book\'s name') }}
+            </div>
+            <br/>
+            <div class="row"><h4>Book's Author: </h4></div>
+            <div class="row">
+                {{ form.author(class_='form-control', placeholder='Enter the book\'s author name') }}
+            </div>
+            <br/>
+            <div class="row"><h4>Photo: </h4></div>
+            <div class="row">
+                {{ form.photo(class_='form-control', placeholder='Enter the name of the photo file (ex: photo.jpg)') }}
+            </div>
+            <br/>
+            <div class="row"><h4>Category: </h4></div>
+            <div class="row">
+                {{ form.category(class_='form-control', placeholder='Enter the book\'s category') }}
+            </div>
+            <br/>
+            <div class="row"><h4>Quantity: </h4></div>
+            <div class="row">
+                {{ form.stock(class_='form-control', placeholder='Enter the stock quantity of the book') }}
+            </div>
+            {% for error in form.stock.errors %}
+                <div class="alert alert-danger row" role="alert">
+                    Please enter a number for the stock!
+                </div>
+            {% endfor %}
+            <br/>
+            <div class="row"><h4>Price (in £): </h4></div>
+            <div class="row">
+                {{ form.price(class_='form-control', placeholder='Enter a book\'s price') }}
+            </div>
+            {% for error in form.price.errors %}
+                <div class="alert alert-danger row" role="alert">
+                    Please enter a number for the price!
+                </div>
+            {% endfor %}
+            <br/>
+            <div class= "row">
+                <input type="submit" class="btn btn-primary col" value="Add book">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

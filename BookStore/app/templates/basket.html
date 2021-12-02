@@ -1,0 +1,26 @@
+<!-- basket.html -->
+
+{% extends "base.html" %}
+{% block content %}
+
+<br/>
+<h1>Basket:</h1>
+<br/>
+{% if rows > 0 %}
+{% for book in books %}
+    <div class="col-2 border border-danger rounded p-3">
+        <img class="col-md" src="{{ url_for('static', filename=book.photo) }}">
+        <div class="col">
+            <h3>{{ book.title }}</h3>
+            <p>By {{ book.author }}</p>
+        </div>
+            <div class="col">
+                <a><strong>Price:</strong> £{{ book.price }}</a>
+            </div>
+    </div>
+    <br/>
+{% endfor %}
+{% else %}
+    <h4>There are no books added!</h4>
+{% endif %}
+{% endblock %}
