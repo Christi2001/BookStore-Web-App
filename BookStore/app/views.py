@@ -55,23 +55,26 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def home():
 	books = Book.query
 	rows = books.count()
-	user = User.query.filter_by(email=current_user.email).first()
-	form = AddToBasketForm()
-	if form.validate_on_submit():
-		book_to_add = Book.query.get(form.id.data)
-		if book_to_add:
-			order = Order()
-			order.book = book_to_add
-			user.books.append(order)
-			db.session.add(order)
-			db.session.commit()
-			flash("Successfully added the book to basket!")
-			return redirect('/')
+	if current_user.is_authenticated:
+		user = User.query.filter_by(email=current_user.email).first()
+		form = AddToBasketForm()
+		if form.validate_on_submit():
+			book_to_add = Book.query.get(form.id.data)
+			if book_to_add:
+				order = Order()
+				order.book = book_to_add
+				user.books.append(order)
+				db.session.add(order)
+				db.session.commit()
+				flash("Successfully added the book to basket!")
+				return redirect('/')
+			else:
+				flash("Couldn't find that book!")
+				return redirect('/')
 		else:
-			flash("Couldn't find that book!")
-			return redirect('/')
+			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form)
 	else:
-		return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form)
+		return render_template('home.html', title='Home', books=books, rows=rows)
 
 # {% if current_user.is_authenticated %}
 # 	<form action="" method="post" name="add_btn">

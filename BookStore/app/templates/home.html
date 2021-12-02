@@ -12,19 +12,21 @@
         <img class="col-md" src="{{ url_for('static', filename=book.photo) }}">
         <div class="col">
             <h3>{{ book.title }}</h3>
+        </div>
+        <div class="col">
             <p>By {{ book.author }}</p>
         </div>
-            <div class="col">
-                <a><strong>Price:</strong> £{{ book.price }}</a>
-            </div>
-            {% if current_user.is_authenticated %}
-            <div class="col">
-                <form action="" method="post" name="add_btn">
-                    {{ form.id(value=book.id, hidden=True) }}
-                    <input type="submit" class="btn btn-success" value="Add to Basket!">
-                </form>
-            </div>
-            {% endif %}
+        <div class="col">
+            <a><strong>Price:</strong> £{{ book.price }}</a>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="col">
+            <form action="" method="post" name="add_btn">
+                {{ form.id(value=book.id, hidden=True) }}
+                <input type="submit" class="btn btn-success" value="Add to Basket!">
+            </form>
+        </div>
+        {% endif %}
     </div>
     <br/>
 {% endfor %}
