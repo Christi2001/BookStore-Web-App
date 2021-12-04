@@ -16,7 +16,7 @@
             <p><strong>Genre:</strong> {{ book.category }}</p>
             <p>In stock: {{ book.stock }}</p>
         </div>
-        <div class="col">
+        <div class="col-4">
             <h3><strong>Price per unit:</strong> £{{ book.price }}</h3>
             {% for user_order in user_orders %}
                 {% if user_order.bookId == book.id %}
@@ -29,8 +29,8 @@
         </div>
         <div class="col-3">
             <div class="row">
-                <h2 class="col-2">Qty:</h2>
-                <div class="col-1">
+                <h2 class="col-2 m-2">Qty:</h2>
+                <div class="col-1 m-2">
                     <form action="" method="post" name="minus">
                         {{ form.id(value=book.id, hidden=True) }}
                         {{ form.action(value='minus', hidden=True) }}
@@ -39,19 +39,19 @@
                 </div>
                 {% for user_order in user_orders %}
                     {% if user_order.bookId == book.id %}
-                        <div class="col-1">
+                        <div class="col-1 m-2">
                             <h2>{{ user_order.quantity }}</h2>
                         </div>
                     {% endif %}
                 {% endfor %}
-                <div class="col-2">
+                <div class="col-2 m-2">
                     <form action="" method="post" name="plus">
                         {{ form.id(value=book.id, hidden=True) }}
                         {{ form.action(value='plus', hidden=True) }}
                         <input type="submit" class="btn border-secondary" value="+">
                     </form>
                 </div>
-                <div class="col-1">
+                <div class="col-1 m-2">
                     <form action="" method="post" name="remove all">
                         {{ form.id(value=book.id, hidden=True) }}
                         {{ form.action(value='remove', hidden=True) }}
@@ -63,6 +63,7 @@
     </div>
     <br/>
 {% endfor %}
+<hr class="border border-secondary">
 <div class="row">
     <h2>Total: £{{ total }}</h2>
 </div>

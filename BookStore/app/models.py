@@ -41,3 +41,8 @@ class Book(db.Model):
     stock = db.Column(db.Integer)
     price = db.Column(db.Float, nullable=False)
     users = db.relationship('Order', back_populates='book')
+
+class Genre(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200))
+    photo = db.Column(db.String(500)) # .jpg

@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+	categories = BookForm().cat_choices
 	books = Book.query
 	rows = books.count()
 	if current_user.is_authenticated:
@@ -47,9 +48,55 @@ def home():
 					flash("Couldn't find that book!")
 					return redirect('/')
 		else:
-			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form)
+			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form, 
+			categories=categories)
 	else:
-		return render_template('home.html', title='Home', books=books, rows=rows)
+		return render_template('home.html', title='Home', books=books, rows=rows, categories=categories)
+
+@app.route('/genre', methods=['GET', 'POST'])
+def genre():
+	categories = BookForm().cat_choices
+	books = Book.query
+	rows = books.count()
+	if current_user.is_authenticated:
+		user = User.query.filter_by(email=current_user.email).first()
+		form = BasketForm()
+		if request.method == "POST":
+			orders = Order.query
+			same_order = 0
+			for order in orders:
+				if order.userId == user.id and order.bookId == form.id.data:
+					current_order = order
+					current_book = Book.query.filter_by(id=form.id.data).first()
+					same_order = 1
+			if same_order == 1:
+				current_order.quantity += 1
+				if current_order.quantity > current_book.stock:
+					flash(current_book.stock)
+					flash("Not enough books in stock!")
+					return redirect('/')
+				db.session.commit()
+				flash(current_order.quantity)
+				flash("Successfully added the book to basket!")
+				return redirect('/')
+			else:
+				book_to_add = Book.query.get(form.id.data)
+				if book_to_add:
+					order = Order(quantity = 1)
+					order.book = book_to_add
+					user.books.append(order)
+					db.session.add(order)
+					db.session.commit()
+					flash("Successfully added the book to basket!")
+					return redirect('/')
+				else:
+					flash("Couldn't find that book!")
+					return redirect('/')
+		else:
+			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form, 
+			categories=categories)
+	else:
+		return render_template('home.html', title='Home', books=books, rows=rows, categories=categories)
 
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
@@ -83,7 +130,7 @@ def basket():
 			current_order.quantity = 0
 		if current_order.quantity == 0:
 			db.session.delete(current_order)
-		flash(current_order.quantity)
+		# flash(current_order.quantity)
 		db.session.commit()
 		return redirect('/basket')
 	else:
