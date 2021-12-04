@@ -9,8 +9,7 @@ from wtforms import IntegerField
 from wtforms import DecimalField
 from wtforms import StringField
 from wtforms import PasswordField
-from wtforms.validators import DataRequired, EqualTo
-from app.models import Genre
+from wtforms.validators import DataRequired, EqualTo, Length
 
 class SignupForm(Form):
     name = TextField('name', validators=[DataRequired()])
@@ -31,18 +30,14 @@ class BookForm(Form):
     title = TextField('title', validators=[DataRequired()])
     author = TextField('author', validators=[DataRequired()])
     photo = StringField('photo', validators=[DataRequired()])
-    genres = Genre.query.all()
-    genre_choices = []
-    for g in genres:
-        genre_choices.append(g.name)
-    # ['Action and Adventure', 'Anthology', 'Classic', 'Comic and Graphic Novel',
-    #                 'Crime and Detective', 'Drama', 'Fable', 'Fairy Tale', 'Fan-Fiction',
-    #                 'Fantasy', 'Historical Fiction', 'Horror', 'Humor', 'Legend', 'Magical Realism', 
-    #                 'Mystery', 'Mythology', 'Realistic Fiction', 'Romance', 'Satire', 
-    #                 'Science Fiction (Sci-Fi)', 'Short Story', 'Suspense/Thriller',
-    #                 'Biography/Autobiography', 'Essay', 'Memoir', 'Narrative Nonfiction',
-    #                 'Periodicals', 'Reference Books', 'Self-help Book', 'Speech', 'Textbook', 'Poetry']
-    genre = SelectField('genre', choices=genre_choices, validators=[DataRequired()])
+    cat_choices = ['Action and Adventure', 'Anthology', 'Classic', 'Comic and Graphic Novel',
+                    'Crime and Detective', 'Drama', 'Fable', 'Fairy Tale', 'Fan-Fiction',
+                    'Fantasy', 'Historical Fiction', 'Horror', 'Humor', 'Legend', 'Magical Realism', 
+                    'Mystery', 'Mythology', 'Realistic Fiction', 'Romance', 'Satire', 
+                    'Science Fiction (Sci-Fi)', 'Short Story', 'Suspense/Thriller',
+                    'Biography/Autobiography', 'Essay', 'Memoir', 'Narrative Nonfiction',
+                    'Periodicals', 'Reference Books', 'Self-help Book', 'Speech', 'Textbook', 'Poetry']
+    category = SelectField('category',choices=cat_choices, validators=[DataRequired()])
     stock = IntegerField('stock', validators=[DataRequired()])
     price = DecimalField('price', validators=[DataRequired()])
 
