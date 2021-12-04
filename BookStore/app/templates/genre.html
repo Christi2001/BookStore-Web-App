@@ -8,17 +8,17 @@
 <br/>
 {% if rows > 0 %}
 <div class="row">
-    {% for category in categories %}
+    {% for genre in categories %}
     <!-- <br/>
-        <h1>{{ category }}</h1>
+        <h1>{{ genre }}</h1>
         <br/> -->
 <div class="card m-4" style="width: 18rem;">
     <img class="card-img-top" src="..." alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title">{{ category }}
+        <h5 class="card-title">{{ genre }}
             {% set counter = 0 %}
             {% for book in books %}
-                {% if book.category == category %}
+                {% if book.genre == genre %}
                     {% set counter = counter + 1 %}
                 {% endif %}
             {% endfor %}
@@ -29,13 +29,13 @@
 </div>
 <div class="row">
     {% for book in books %}
-    {% if book.category == category %}
+    {% if book.genre == genre %}
     <div class="col-2 border border-secondary rounded p-3 m-2">
                 <img class="col h-60" src="{{ url_for('static', filename=book.photo) }}">
                 <div class="col h-40">
                     <h3>{{ book.title }}</h3>
                     <p>By {{ book.author }}</p>
-                    <p><strong>Genre:</strong> {{ book.category }}</p>
+                    <p><strong>Genre:</strong> {{ book.genre }}</p>
                     <p><strong>Price:</strong> £{{ book.price }}</p>
                 </div>
                 {% if current_user.is_authenticated %}

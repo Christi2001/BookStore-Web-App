@@ -37,7 +37,7 @@ class Book(db.Model):
     title = db.Column(db.String(300), nullable=False)
     author = db.Column(db.String(300), nullable=False)
     photo = db.Column(db.String(500)) # .jpg
-    category = db.Column(db.String(200))
+    genre = db.Column(db.String(200))
     stock = db.Column(db.Integer)
     price = db.Column(db.Float, nullable=False)
     users = db.relationship('Order', back_populates='book')
@@ -46,3 +46,4 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
     photo = db.Column(db.String(500)) # .jpg
+    copies = db.Column(db.Integer)
