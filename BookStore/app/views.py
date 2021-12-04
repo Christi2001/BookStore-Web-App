@@ -3,14 +3,14 @@
 from flask import render_template, flash, request, redirect
 from flask.wrappers import Request
 from app import app, db
-from app.models import Order, User, Book, Genre
+from app.models import Order, User, Book
 from .forms import BasketForm, ChangePasswordForm, BookForm, SearchForm, SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-	genres = BookForm().genre_choices
+	categories = BookForm().cat_choices
 	books = Book.query
 	rows = books.count()
 	if current_user.is_authenticated:
@@ -49,13 +49,13 @@ def home():
 					return redirect('/')
 		else:
 			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form, 
-			genres=genres)
+			categories=categories)
 	else:
-		return render_template('home.html', title='Home', books=books, rows=rows, genres=genres)
+		return render_template('home.html', title='Home', books=books, rows=rows, categories=categories)
 
 @app.route('/genre', methods=['GET', 'POST'])
 def genre():
-	genres = BookForm().genre_choices
+	categories = BookForm().cat_choices
 	books = Book.query
 	rows = books.count()
 	if current_user.is_authenticated:
@@ -94,9 +94,9 @@ def genre():
 					return redirect('/')
 		else:
 			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form, 
-			genres=genres)
+			categories=categories)
 	else:
-		return render_template('home.html', title='Home', books=books, rows=rows, genres=genres)
+		return render_template('home.html', title='Home', books=books, rows=rows, categories=categories)
 
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
@@ -156,7 +156,7 @@ def add_book():
 		form = BookForm()
 		if form.validate_on_submit():
 			new_book = Book(title=form.title.data, author=form.author.data, photo=form.photo.data, 
-			genre=form.genre.data, stock=form.stock.data, price=form.price.data)
+			category=form.category.data, stock=form.stock.data, price=form.price.data)
 			books = Book.query
 			for book in books:
 				if book.title == new_book.title:
