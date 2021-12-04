@@ -9,7 +9,8 @@ from wtforms import IntegerField
 from wtforms import DecimalField
 from wtforms import StringField
 from wtforms import PasswordField
-from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.validators import DataRequired, EqualTo
+from app.models import Category
 
 class SignupForm(Form):
     name = TextField('name', validators=[DataRequired()])
@@ -30,20 +31,20 @@ class BookForm(Form):
     title = TextField('title', validators=[DataRequired()])
     author = TextField('author', validators=[DataRequired()])
     photo = StringField('photo', validators=[DataRequired()])
-    cat_choices = ['Action and Adventure', 'Anthology', 'Classic', 'Comic and Graphic Novel',
-                    'Crime and Detective', 'Drama', 'Fable', 'Fairy Tale', 'Fan-Fiction',
-                    'Fantasy', 'Historical Fiction', 'Horror', 'Humor', 'Legend', 'Magical Realism', 
-                    'Mystery', 'Mythology', 'Realistic Fiction', 'Romance', 'Satire', 
-                    'Science Fiction (Sci-Fi)', 'Short Story', 'Suspense/Thriller',
-                    'Biography/Autobiography', 'Essay', 'Memoir', 'Narrative Nonfiction',
-                    'Periodicals', 'Reference Books', 'Self-help Book', 'Speech', 'Textbook', 'Poetry']
-    category = SelectField('category',choices=cat_choices, validators=[DataRequired()])
+    cats = Category.query.all()
+    category_names = []
+    for cat in cats:
+        category_names.append(cat.name)
+    category = SelectField('category', choices=category_names, validators=[DataRequired()])
     stock = IntegerField('stock', validators=[DataRequired()])
     price = DecimalField('price', validators=[DataRequired()])
 
 class BasketForm(Form):
     id = IntegerField('id', validators=[DataRequired()])
     action = TextField('title', validators=[DataRequired()])
+
+class CategoryForm(Form):
+    id = IntegerField('id', validators=[DataRequired()])
 
 class SearchForm(Form):
     title = TextField('title', validators=[DataRequired()])

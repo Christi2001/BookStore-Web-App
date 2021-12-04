@@ -9,20 +9,20 @@
 {% if rows > 0 %}
 {% for book in books %}
     <div class="row border border-secondary rounded p-3">
-        <img class="col-1" src="{{ url_for('static', filename=book.photo) }}">
+        <img class="col-2" src="{{ url_for('static', filename=book.photo) }}">
         <div class="col-3">
             <h3>{{ book.title }}</h3>
             <p>By {{ book.author }}</p>
-            <p><strong>Genre:</strong> {{ book.category }}</p>
+            <p><strong>Category:</strong> {{ book.category }}</p>
             <p>In stock: {{ book.stock }}</p>
         </div>
-        <div class="col-4">
-            <h3><strong>Price per unit:</strong> £{{ book.price }}</h3>
+        <div class="col-3">
+            <h4><strong>Price per unit:</strong> £{{ book.price }}</h4>
             {% for user_order in user_orders %}
                 {% if user_order.bookId == book.id %}
                     {% if user_order.quantity > 1 %}
-                        <h3><strong>Total price for {{ user_order.quantity}} items:</strong> 
-                        £{{ book.price * user_order.quantity }}</h3>
+                        <h4><strong>Total price for {{ user_order.quantity}} items:</strong> 
+                        £{{ book.price * user_order.quantity }}</h4>
                     {% endif %}
                 {% endif %}
             {% endfor %}
@@ -63,10 +63,13 @@
     </div>
     <br/>
 {% endfor %}
-<hr class="border border-secondary">
-<div class="row">
+<div class="row border border-secondary"></div>
+<br>
+<div class="row p-3 border border-secondary">
     <h2>Total: £{{ total }}</h2>
 </div>
+<br>
+<br>
 {% else %}
     <h4>Your basket is empty!</h4>
 {% endif %}

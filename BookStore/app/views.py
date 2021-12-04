@@ -1,63 +1,29 @@
 # views.py
 
 from flask import render_template, flash, request, redirect
+from flask.helpers import url_for
 from flask.wrappers import Request
 from app import app, db
-from app.models import Order, User, Book
-from .forms import BasketForm, ChangePasswordForm, BookForm, SearchForm, SignupForm, LoginForm
+from app.models import Order, User, Book, Category
+from .forms import BasketForm, CategoryForm, ChangePasswordForm, BookForm, SearchForm, SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-	categories = BookForm().cat_choices
-	books = Book.query
-	rows = books.count()
-	if current_user.is_authenticated:
-		user = User.query.filter_by(email=current_user.email).first()
-		form = BasketForm()
-		if request.method == "POST":
-			orders = Order.query
-			same_order = 0
-			for order in orders:
-				if order.userId == user.id and order.bookId == form.id.data:
-					current_order = order
-					current_book = Book.query.filter_by(id=form.id.data).first()
-					same_order = 1
-			if same_order == 1:
-				current_order.quantity += 1
-				if current_order.quantity > current_book.stock:
-					flash(current_book.stock)
-					flash("Not enough books in stock!")
-					return redirect('/')
-				db.session.commit()
-				flash(current_order.quantity)
-				flash("Successfully added the book to basket!")
-				return redirect('/')
-			else:
-				book_to_add = Book.query.get(form.id.data)
-				if book_to_add:
-					order = Order(quantity = 1)
-					order.book = book_to_add
-					user.books.append(order)
-					db.session.add(order)
-					db.session.commit()
-					flash("Successfully added the book to basket!")
-					return redirect('/')
-				else:
-					flash("Couldn't find that book!")
-					return redirect('/')
-		else:
-			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form, 
-			categories=categories)
+	categories = Category.query
+	form = CategoryForm()
+	if request.method == "POST":
+		category = Category.query.get(form.id.data)
+		# books = Book.query.filter_by(category=category).all()
+		return redirect(url_for('category', name=category.name))
 	else:
-		return render_template('home.html', title='Home', books=books, rows=rows, categories=categories)
+		return render_template('home.html', title='Home', categories=categories, form=form)
 
-@app.route('/genre', methods=['GET', 'POST'])
-def genre():
-	categories = BookForm().cat_choices
-	books = Book.query
-	rows = books.count()
+@app.route('/category/<name>', methods=['GET', 'POST'])
+def category(name):
+	books = Book.query.filter_by(category=name).all()
+	rows = len(books)
 	if current_user.is_authenticated:
 		user = User.query.filter_by(email=current_user.email).first()
 		form = BasketForm()
@@ -74,11 +40,11 @@ def genre():
 				if current_order.quantity > current_book.stock:
 					flash(current_book.stock)
 					flash("Not enough books in stock!")
-					return redirect('/')
+					return redirect(url_for('category', name=name))
 				db.session.commit()
 				flash(current_order.quantity)
 				flash("Successfully added the book to basket!")
-				return redirect('/')
+				return redirect(url_for('category', name=name))
 			else:
 				book_to_add = Book.query.get(form.id.data)
 				if book_to_add:
@@ -88,15 +54,15 @@ def genre():
 					db.session.add(order)
 					db.session.commit()
 					flash("Successfully added the book to basket!")
-					return redirect('/')
+					return redirect(url_for('category', name=name))
 				else:
 					flash("Couldn't find that book!")
-					return redirect('/')
+					return redirect(url_for('category', name=name))
 		else:
-			return render_template('home.html', title='Home', home=home, books=books, rows=rows, form=form, 
-			categories=categories)
+			return render_template('category.html', title=name, home=home, books=books, rows=rows, form=form, 
+			name=name)
 	else:
-		return render_template('home.html', title='Home', books=books, rows=rows, categories=categories)
+		return render_template('category.html', title=name, books=books, rows=rows, name=name)
 
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
@@ -137,14 +103,6 @@ def basket():
 		return render_template('basket.html', title='Basket', rows=rows, books=books, 
 		form=form, user_orders=user_orders, total=total)
 
-# {% if current_user.is_authenticated %}
-# 	<form action="" method="post" name="add_btn">
-# 		{{ form.id(value=book.id, hidden=True) }}
-# 		{{ form.status(value='watched', hidden=True) }}
-# 		<input type="submit" class="btn btn-success" value="Add to Basket!">
-# 	</form>
-# {% endif %}
-
 @app.route('/search', methods=['GET', 'POST'])
 def search():
 	return 'Search'
@@ -163,13 +121,15 @@ def add_book():
 					flash('That book has already been added!')
 					return redirect('/add_book')
 			db.session.add(new_book)
+			category = Category.query.filter_by(name=new_book.category).first()
+			category.number += 1
 			db.session.commit()
 			flash('Succesfully added book!')
 			return redirect('/add_book')
 		else:
 			return render_template('add_book.html', title='Add book', form=form)
 	else:
-		flash('Only admin can add book!')
+		flash('Only admin can add books!')
 		return redirect('/')
 
 # Account related views
