@@ -9,33 +9,36 @@
 {% if rows > 0 %}
     <div class="row">
         {% for book in books %}
-            <div class="col-3 border border-secondary rounded p-3">
-                <div class="row">
-                    <img class="col-6 h-50" src="{{ url_for('static', filename=book.photo) }}">
-                    <div class="col-4">
-                        <h3>{{ book.title }}</h3>
-                        <p>By {{ book.author }}</p>
-                        <p><strong>Category:</strong> {{ book.category }}</p>
-                        <p><strong>Price:</strong> £{{ book.price }}</p>
+            <div class="col-4 p-4">
+                <div class="card-deck h-100">
+                    <img class="col-6 card p-0 mr-0" src="{{ url_for('static', filename=book.photo) }}">
+                    <div class="col-6 card p-0 ml-0">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text">By {{ book.author }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Category:</strong> {{ book.category }}</li>
+                            <li class="list-group-item"><strong>Price:</strong> £{{ book.price }}</li>
+                        </ul>
                     </div>
                 </div>
+                <div class="w-100">
                     {% if current_user.is_authenticated %}
-                    {% if book.stock > 0 %}
-                    <div class="col p-0 text-center">
-                        <form action="" method="post" name="add_btn">
-                            {{ form.id(value=book.id, hidden=True) }}
-                            <input type="submit" class="align-bottom w-100 btn btn-success" value="Add to Basket!">
-                        </form>
-                    </div>
+                        {% if book.stock > 0 %}
+                            <form action="" method="post" name="add_btn">
+                                {{ form.id(value=book.id, hidden=True) }}
+                                <input type="submit" class="align-bottom w-100 btn btn-success" value="Add to Basket!">
+                            </form>
+                        {% else %}
+                            <div class="col">
+                                <p class="text-danger">Out of stock!</p>
+                            </div>
+                        {% endif %}
                     {% else %}
-                    <div class="col">
-                        <p class="text-danger">Out of stock!</p>
-                    </div>
+                        <a href="/login" class="align-bottom w-100 btn btn-primary">Login to buy</a>
                     {% endif %}
-                    {% else %}
-                    <a href="/login" class="align-bottom w-100 btn btn-primary">Login to buy</a>
-                    {% endif %}
-                <br/>
+                </div>
             </div>
         {% endfor %}
     </div>

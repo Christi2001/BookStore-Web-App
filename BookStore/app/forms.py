@@ -41,10 +41,11 @@ class BookForm(Form):
 
 class BasketForm(Form):
     id = IntegerField('id', validators=[DataRequired()])
-    action = TextField('title', validators=[DataRequired()])
+    action = TextField('action', validators=[DataRequired()])
 
 class CategoryForm(Form):
     id = IntegerField('id', validators=[DataRequired()])
 
 class SearchForm(Form):
     title = TextField('title', validators=[DataRequired()])
+    action = TextField('action', validators=[DataRequired()])

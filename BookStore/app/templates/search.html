@@ -1,8 +1,60 @@
 <!-- search.html -->
 
-<!-- <form class="form-inline" action="" method="post" name="remove all">
-    <div class="mr-sm-2">
-        {{ search.title(class_='form-control', placeholder='Enter the book\'s name') }}
+{% extends "base.html" %}
+{% block content %}
+
+<br>
+<form action="" method="post" name="remove all">
+    <div class="row">
+        <div class="col-10">
+            {{ search.title(class_='form-control', placeholder='Search for a book\'s title') }}
+            {{ search.action(value='search', hidden=True) }}
+        </div>
+        <input type="submit" class="col-2 btn btn-outline-primary" value="Search">
     </div>
-    <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Search">
-</form> -->
+</form>
+
+{% if rows == -1 %}
+{% elif rows > 0 %}
+    <div class="row">
+        {% for book in books %}
+            <div class="col-4 p-4 mb-4">
+                <div class="card-deck h-100">
+                    <img class="col-6 card p-0 mr-0" src="{{ url_for('static', filename=book.photo) }}">
+                    <div class="col-6 card p-0 ml-0">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text">By {{ book.author }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Category:</strong> {{ book.category }}</li>
+                            <li class="list-group-item"><strong>Price:</strong> £{{ book.price }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="w-100">
+                    {% if current_user.is_authenticated %}
+                        {% if book.stock > 0 %}
+                            <form action="" method="post" name="add_btn">
+                                {{ form.id(value=book.id, hidden=True) }}
+                                {{ form.action(value='add', hidden=True) }}
+                                <input type="submit" class="align-bottom w-100 btn btn-success" value="Add to Basket!">
+                            </form>
+                        {% else %}
+                            <div class="col">
+                                <p class="text-danger">Out of stock!</p>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <a href="/login" class="align-bottom w-100 btn btn-primary">Login to buy</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+<br>
+<h4 class="text-center">We found no books that match your search!</h4>
+{% endif %}
+
+{% endblock %}

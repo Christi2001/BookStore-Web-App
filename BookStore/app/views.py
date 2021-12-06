@@ -64,6 +64,67 @@ def category(name):
 	else:
 		return render_template('category.html', title=name, books=books, rows=rows, name=name)
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+	search = SearchForm()
+	form = BasketForm()
+	rows = -1
+	searched_books = []
+	if request.method == "POST":
+		if search.action.data == 'search':
+			searched_word = search.title.data.lower()
+			books = Book.query
+			for book in books:
+				book_title = book.title.lower()
+				if searched_word in book_title:
+					searched_books.append(book)
+			rows = len(searched_books)
+			return render_template('search.html', title='Search', search=search, form=form,
+			 rows=rows, books=searched_books)
+		elif form.action.data == 'add':
+			if current_user.is_authenticated:
+				user = User.query.filter_by(email=current_user.email).first()
+				form = BasketForm()
+				orders = Order.query
+				same_order = 0
+				for order in orders:
+					if order.userId == user.id and order.bookId == form.id.data:
+						current_order = order
+						current_book = Book.query.filter_by(id=form.id.data).first()
+						same_order = 1
+				if same_order == 1:
+					current_order.quantity += 1
+					if current_order.quantity > current_book.stock:
+						flash(current_book.stock)
+						flash("Not enough books in stock!")
+						# return redirect('/search')
+						return render_template('search.html', title='Search', search=search, 
+						rows=rows, books=searched_books)
+					db.session.commit()
+					flash(current_order.quantity)
+					flash("Successfully added the book to basket!")
+					return render_template('search.html', title='Search', search=search, rows=rows, 
+					books=searched_books)
+				else:
+					book_to_add = Book.query.get(form.id.data)
+					if book_to_add:
+						order = Order(quantity = 1)
+						order.book = book_to_add
+						user.books.append(order)
+						db.session.add(order)
+						db.session.commit()
+						flash("Successfully added the book to basket!")
+						return render_template('search.html', title='Search', search=search, rows=rows, 
+						books=searched_books)
+					else:
+						flash("Couldn't find that book!")
+						return render_template('search.html', title='Search', search=search, rows=rows, 
+						books=searched_books)
+		else:
+			return redirect('/search')
+	else:
+		return render_template('search.html', title='Search', search=search, rows=rows, books=searched_books)
+
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
 def basket():
@@ -102,10 +163,6 @@ def basket():
 	else:
 		return render_template('basket.html', title='Basket', rows=rows, books=books, 
 		form=form, user_orders=user_orders, total=total)
-
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-	return 'Search'
 
 @app.route('/add_book', methods=['GET', 'POST'])
 @login_required
