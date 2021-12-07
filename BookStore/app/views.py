@@ -8,10 +8,21 @@ from app.models import Order, User, Book, Category
 from .forms import BasketForm, CategoryForm, ChangePasswordForm, BookForm, SearchForm, SignupForm, LoginForm
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+formatter = logging.Formatter('[%(asctime)s]:%(levelname)s:%(message)s')
+
+file_handler = logging.FileHandler('appinfo.log')
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-	app.logger.info('Index route request')
+	logger.info('Index route request')
 	categories = Category.query
 	form = CategoryForm()
 	if request.method == "POST":
@@ -22,7 +33,7 @@ def index():
 
 @app.route('/category/<name>', methods=['GET', 'POST'])
 def category(name):
-	app.logger.info('Category "' + name + '" route request')
+	logger.info('Category "' + name + '" route request')
 	books = Book.query.filter_by(category=name).all()
 	rows = len(books)
 	if current_user.is_authenticated:
@@ -40,11 +51,11 @@ def category(name):
 				current_order.quantity += 1
 				if current_order.quantity > current_book.stock:
 					flash("Not enough books in stock!")
-					app.logger.warning('Tried to add more books than the number in stock')
+					logger.warning('Tried to add more books than the number in stock')
 					return redirect(url_for('category', name=name))
 				db.session.commit()
 				flash("Successfully added the book to basket!")
-				app.logger.info('User "' + current_user.name + '" added book "' + current_book.title + '" to basket' )
+				logger.info('User "' + current_user.name + '" added book "' + current_book.title + '" to basket' )
 				return redirect(url_for('category', name=name))
 			else:
 				book_to_add = Book.query.get(form.id.data)
@@ -55,11 +66,11 @@ def category(name):
 					db.session.add(order)
 					db.session.commit()
 					flash("Successfully added the book to basket!")
-					app.logger.info('User "' + current_user.name + '" added book "' + book_to_add.title + '" to basket' )
+					logger.info('User "' + current_user.name + '" added book "' + book_to_add.title + '" to basket' )
 					return redirect(url_for('category', name=name))
 				else:
 					flash("Couldn't find that book!")
-					app.logger.error('Book "' + book_to_add.title + '" could not be found' )
+					logger.error('Book "' + book_to_add.title + '" could not be found' )
 					return redirect(url_for('category', name=name))
 		else:
 			return render_template('category.html', title=name, books=books, rows=rows, form=form, 
@@ -70,9 +81,9 @@ def category(name):
 @app.route('/search/<keyword>', methods=['GET', 'POST'])
 def search(keyword):
 	if keyword == '_empty_':
-		app.logger.info('Empty search route request')
+		logger.info('Empty search route request')
 	else:
-		app.logger.info('Search by keyword "' + keyword + '" route request')
+		logger.info('Search by keyword "' + keyword + '" route request')
 	search = SearchForm()
 	form = BasketForm()
 	searched_books = []
@@ -102,11 +113,11 @@ def search(keyword):
 					current_order.quantity += 1
 					if current_order.quantity > current_book.stock:
 						flash("Not enough books in stock!")
-						app.logger.warning('Tried to add more books than the number in stock')
+						logger.warning('Tried to add more books than the number in stock')
 						return redirect(url_for('search', keyword=searched_word))
 					db.session.commit()
 					flash("Successfully added the book to basket!")
-					app.logger.info('User "' + current_user.name + '" added book "' + current_book.title + '" to basket' )
+					logger.info('User "' + current_user.name + '" added book "' + current_book.title + '" to basket' )
 					return redirect(url_for('search', keyword=searched_word))
 				else:
 					book_to_add = Book.query.get(form.id.data)
@@ -117,11 +128,11 @@ def search(keyword):
 						db.session.add(order)
 						db.session.commit()
 						flash("Successfully added the book to basket!")
-						app.logger.info('User "' + current_user.name + '" added book "' + book_to_add.title + '" to basket' )
+						logger.info('User "' + current_user.name + '" added book "' + book_to_add.title + '" to basket' )
 						return redirect(url_for('search', keyword=searched_word))
 					else:
 						flash("Couldn't find that book!")
-						app.logger.error('Book "' + book_to_add.title + '" could not be found' )
+						logger.error('Book "' + book_to_add.title + '" could not be found' )
 						return redirect(url_for('search', keyword=searched_word))
 	else:
 		searched_word = keyword.lower()
@@ -141,7 +152,7 @@ def search(keyword):
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
 def basket():
-	app.logger.info('Basket route request')
+	logger.info('Basket route request')
 	user = User.query.filter_by(email=current_user.email).first()
 	user_orders = user.books
 	books = []
@@ -162,19 +173,19 @@ def basket():
 					current_book = Book.query.filter_by(id=form.id.data).first()
 			if form.action.data == 'minus':
 				current_order.quantity -= 1
-				app.logger.info('User "' + current_user.name +
+				logger.info('User "' + current_user.name +
 				'" decreased the number of copies for book "' + current_book.title + '" in their basket')
 			elif form.action.data == 'plus':
 				current_order.quantity += 1
 				if current_order.quantity > current_book.stock:
 					flash("Not enough books in stock!")
-					app.logger.warning('User "' + current_user.name + '" tried to add more books than the number in stock')
+					logger.warning('User "' + current_user.name + '" tried to add more books than the number in stock')
 					return redirect('/basket')
-				app.logger.info('User "' + current_user.name + 
+				logger.info('User "' + current_user.name + 
 				'" increased the number of copies for book "' + current_book.title + '" in their basket')
 			elif form.action.data == 'remove':
 				current_order.quantity = 0
-				app.logger.info('User "' + current_user.name + 
+				logger.info('User "' + current_user.name + 
 				'" removed all copies of book "' + current_book.title + '" from basket')
 			if current_order.quantity == 0:
 				db.session.delete(current_order)
@@ -187,10 +198,10 @@ def basket():
 							db.session.delete(order)
 						else:
 							flash("Not enough copies of " + book.title + "in stock! Only " + book.stock + " left!")
-							app.logger.error('User "' + current_user.name +
+							logger.error('User "' + current_user.name +
 							 '" tried to buy more books than the number in stock')
 							return redirect('/basket')
-			app.logger.info('User "' + current_user.name + '" finalised their order')
+			logger.info('User "' + current_user.name + '" finalised their order')
 			flash("Order finalised!")
 		db.session.commit()
 		return redirect('/basket')
@@ -201,7 +212,7 @@ def basket():
 @app.route('/add_book', methods=['GET', 'POST'])
 @login_required
 def add_book():
-	app.logger.info('Add Book route request')
+	logger.info('Add Book route request')
 	if current_user.email == 'sc20ccp@leeds.ac.uk': #only for admin
 		form = BookForm()
 		if form.validate_on_submit():
@@ -211,27 +222,27 @@ def add_book():
 			for book in books:
 				if book.title == new_book.title and book.author == new_book.author:
 					flash('That book has already been added!')
-					app.logger.warning('Admin tried to add book "' + book.title + '" which already exists')
+					logger.warning('Admin tried to add book "' + book.title + '" which already exists')
 					return redirect('/add_book')
 			db.session.add(new_book)
 			category = Category.query.filter_by(name=new_book.category).first()
 			category.number += 1
 			db.session.commit()
 			flash('Succesfully added book!')
-			app.logger.info('Admin successfully added book "' + new_book.title + '"')
+			logger.info('Admin successfully added book "' + new_book.title + '"')
 			return redirect('/add_book')
 		else:
 			return render_template('add_book.html', title='Add book', form=form)
 	else:
 		flash('Only admin can add books!')
-		app.logger.warning('User "' + current_user.name + 
+		logger.warning('User "' + current_user.name + 
 		'" tried to access the "Add Books" page without admin privilegies')
 		return redirect('/')
 
 # Account related views
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	app.logger.info('Login route request')
+	logger.info('Login route request')
 	form = LoginForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=form.email.data).first()
@@ -239,29 +250,29 @@ def login():
 			if check_password_hash(user.password_hash, form.password.data):
 				login_user(user)
 				flash("Login Successful!")
-				app.logger.info('User "' + current_user.name + '" logged in successfully')
+				logger.info('User "' + current_user.name + '" logged in successfully')
 				return redirect('/')
 			else:
 				pw_error = 'Wrong Password! Try again!'
-				app.logger.warning('User failed to login')
+				logger.warning('User failed to login')
 				return render_template('login.html', title='Login', form=form, pw_error=pw_error)
 		else:
 			em_error = 'Invalid email! Try again!'
-			app.logger.warning('User failed to login')
+			logger.warning('User failed to login')
 			return render_template('login.html', title='Login', form=form, em_error=em_error)
 	else:
 		return render_template('login.html', title='Login', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-	app.logger.info('Singup route request')
+	logger.info('Singup route request')
 	form = SignupForm()
 	if form.validate_on_submit():
 		users = User.query
 		for user in users:
 			if form.email.data == user.email:
 				em_error = 'Email already in use! Please enter a different one!'
-				app.logger.warning('User failed to sign up')
+				logger.warning('User failed to sign up')
 				return render_template('signup.html', title='Sign Up', form=form, em_error=em_error)
 		hashed_password = generate_password_hash(form.password_hash.data, "sha256")
 		new_user = User(name=form.name.data, email=form.email.data, password_hash=hashed_password)
@@ -269,7 +280,7 @@ def signup():
 		db.session.commit()
 		flash('Succesfully signed up!')
 		login_user(new_user)
-		app.logger.info('User "' + current_user.name + '" singed up successfully')
+		logger.info('User "' + current_user.name + '" singed up successfully')
 		return redirect('/')
 	else:
 		return render_template('signup.html', title='Sign Up', form=form)
@@ -277,13 +288,13 @@ def signup():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-	app.logger.info('Profile route request')
+	logger.info('Profile route request')
 	return render_template('profile.html', title=current_user.name)
 
 @app.route('/pw_change', methods=['GET', 'POST'])
 @login_required
 def pw_change():
-	app.logger.info('Password change route request')
+	logger.info('Password change route request')
 	form = ChangePasswordForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=current_user.email).first()
@@ -291,11 +302,11 @@ def pw_change():
 			user.password_hash = generate_password_hash(form.new_password_hash.data, "sha256")
 			db.session.commit()
 			flash('Successfully changed password!')
-			app.logger.info('User "' + current_user.name + '" changed their password successfully')
+			logger.info('User "' + current_user.name + '" changed their password successfully')
 			return redirect('/profile')
 		else:
 			old_pw_error = 'Old password is incorrect! Try again!'
-			app.logger.warning('User "' + current_user.name + '" failed to change their password')
+			logger.warning('User "' + current_user.name + '" failed to change their password')
 			return render_template('pw_change.html',title='Change Password', form=form, old_pw_error=old_pw_error)
 	else:
 		return render_template('pw_change.html',title='Change Password', form=form)
@@ -303,10 +314,10 @@ def pw_change():
 @app.route('/delete_account', methods=['GET', 'POST'])
 @login_required
 def delete_account():
-	app.logger.info('Delete account route request')
+	logger.info('Delete account route request')
 	user = User.query.filter_by(email=current_user.email).first()
 	if user:
-		app.logger.info('User "' + current_user.name + '" deleted their account')
+		logger.info('User "' + current_user.name + '" deleted their account')
 		logout_user()
 		db.session.delete(user)
 		db.session.commit()
@@ -317,9 +328,9 @@ def delete_account():
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
-	app.logger.info('Logout route request')
+	logger.info('Logout route request')
 	flash("You've been successfully logged out!")
-	app.logger.info('User "' + current_user.name + '" logged out')
+	logger.info('User "' + current_user.name + '" logged out')
 	logout_user()
 	return redirect('/')
 

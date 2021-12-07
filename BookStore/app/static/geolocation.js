@@ -1,3 +1,5 @@
+// geolocation.js
+
 // Geolocation
 localStorage.setItem("lat", -1);
 localStorage.setItem("long", -1);
