@@ -337,3 +337,14 @@
 [2021-12-07 19:43:12,591]:INFO:Singup route request
 [2021-12-07 19:48:09,921]:INFO:Search by keyword "a" route request
 [2021-12-07 19:48:14,760]:INFO:Index route request
+[2021-12-07 22:10:18,109]:INFO:Index route request
+[2021-12-07 22:10:21,241]:INFO:Basket route request
+[2021-12-07 22:10:22,753]:INFO:Profile route request
+[2021-12-07 22:10:24,691]:INFO:Logout route request
+[2021-12-07 22:10:24,691]:INFO:User "Christian Constantin Pustianu" logged out
+[2021-12-07 22:10:25,002]:INFO:Index route request
+[2021-12-07 22:10:28,366]:INFO:Login route request
+[2021-12-07 22:10:33,296]:INFO:Login route request
+[2021-12-07 22:10:33,304]:INFO:User "Christian" logged in successfully
+[2021-12-07 22:10:33,631]:INFO:Index route request
+[2021-12-07 22:10:35,399]:INFO:Basket route request
