@@ -31,9 +31,8 @@
                                 <input type="submit" class="align-bottom w-100 btn btn-success" value="Add to Basket!">
                             </form>
                         {% else %}
-                            <div class="col">
-                                <p class="text-danger">Out of stock!</p>
-                            </div>
+                            <button type="button" class="align-bottom w-100 btn btn btn-danger" disabled>
+                                Out of stock!</button>
                         {% endif %}
                     {% else %}
                         <a href="/login" class="align-bottom w-100 btn btn-primary">Login to buy</a>

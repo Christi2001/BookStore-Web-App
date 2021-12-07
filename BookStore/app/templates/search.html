@@ -7,7 +7,7 @@
 <form action="" method="post" name="remove all">
     <div class="row">
         <div class="col-10">
-            {{ search.title(class_='form-control', placeholder='Search for a book\'s title') }}
+            {{ search.title(class_='form-control', placeholder='Search for a book\'s title or author') }}
             {{ search.action(value='search', hidden=True) }}
         </div>
         <input type="submit" class="col-2 btn btn-outline-primary" value="Search">
@@ -16,6 +16,8 @@
 
 {% if rows == -1 %}
 {% elif rows > 0 %}
+    <br>
+    <h2 class="text-center">Search results for "{{ keyword }}"</h2>
     <div class="row">
         {% for book in books %}
             <div class="col-4 p-4 mb-4">
@@ -41,9 +43,8 @@
                                 <input type="submit" class="align-bottom w-100 btn btn-success" value="Add to Basket!">
                             </form>
                         {% else %}
-                            <div class="col">
-                                <p class="text-danger">Out of stock!</p>
-                            </div>
+                        <button type="button" class="align-bottom w-100 btn btn btn-danger" disabled>
+                            Out of stock!</button>
                         {% endif %}
                     {% else %}
                         <a href="/login" class="align-bottom w-100 btn btn-primary">Login to buy</a>

@@ -66,11 +66,22 @@
 <div class="row border border-secondary"></div>
 <br>
 <div class="col p-3 border border-secondary rounded" onmouseover="getLocation()">
-    <h2>Total: £{{ total }}</h2>
-    <div class="row border border-secondary"></div>
+    <div class="row">
+        <h2 class="col-4">Sub-total: £{{ total }}</h2>
+        <button class="col-7 btn btn-outline-secondary" onclick="writeDistanceToCompany()">Delivery</button>
+    </div>
     <br>
-    <h2>Transport: </h2>
-
+    <div id="distance"></div>
+    <div id="fin" style="display: none;">
+        <div class="row border border-secondary"></div><br>
+        <p class="text-danger">Payment can only be done via reimbursment when the package is delivered!!!</p>
+        <h2>Transport: £2.00</h2>
+        <h2>Total: £{{ total + 2.00 }}</h2>
+        <form action="" method="post" name="remove all">
+            {{ form.action(value='finalise', hidden=True) }}
+            <input type="submit" class="btn w-100 btn-success" value="Finalise order!">
+        </form>
+    </div>
 </div>
 <br>
 <br>
