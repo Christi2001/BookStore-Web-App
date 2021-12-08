@@ -337,3 +337,113 @@
 [2021-12-07 19:43:12,591]:INFO:Singup route request
 [2021-12-07 19:48:09,921]:INFO:Search by keyword "a" route request
 [2021-12-07 19:48:14,760]:INFO:Index route request
+[2021-12-08 18:00:48,653]:INFO:Index route request
+[2021-12-08 18:00:51,313]:INFO:Basket route request
+[2021-12-08 18:01:15,710]:INFO:Basket route request
+[2021-12-08 18:01:15,721]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:15,981]:INFO:Basket route request
+[2021-12-08 18:01:18,423]:INFO:Basket route request
+[2021-12-08 18:01:18,434]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:18,694]:INFO:Basket route request
+[2021-12-08 18:01:23,222]:INFO:Basket route request
+[2021-12-08 18:01:23,239]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:23,600]:INFO:Basket route request
+[2021-12-08 18:01:24,753]:INFO:Basket route request
+[2021-12-08 18:01:24,769]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:25,115]:INFO:Basket route request
+[2021-12-08 18:01:27,752]:INFO:Basket route request
+[2021-12-08 18:01:27,761]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:28,113]:INFO:Basket route request
+[2021-12-08 18:01:28,123]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:28,240]:INFO:Basket route request
+[2021-12-08 18:01:29,170]:INFO:Basket route request
+[2021-12-08 18:01:29,183]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:29,546]:INFO:Basket route request
+[2021-12-08 18:01:30,140]:INFO:Basket route request
+[2021-12-08 18:01:30,157]:INFO:User "Christian" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 18:01:30,512]:INFO:Basket route request
+[2021-12-08 18:01:31,451]:INFO:Basket route request
+[2021-12-08 18:01:31,472]:WARNING:User "Christian" tried to add more books than the number in stock
+[2021-12-08 18:01:31,805]:INFO:Basket route request
+[2021-12-08 18:01:33,930]:INFO:Basket route request
+[2021-12-08 18:01:33,944]:INFO:User "Christian" removed all copies of book "Life of Pi" from basket
+[2021-12-08 18:01:34,308]:INFO:Basket route request
+[2021-12-08 18:01:35,881]:INFO:Basket route request
+[2021-12-08 18:01:35,891]:INFO:User "Christian" removed all copies of book "Jurassic Park" from basket
+[2021-12-08 18:01:36,241]:INFO:Basket route request
+[2021-12-08 18:01:37,083]:INFO:Basket route request
+[2021-12-08 18:01:37,093]:INFO:User "Christian" removed all copies of book "Macbeth" from basket
+[2021-12-08 18:01:37,434]:INFO:Basket route request
+[2021-12-08 19:07:40,369]:INFO:Index route request
+[2021-12-08 19:10:19,975]:INFO:Index route request
+[2021-12-08 19:12:34,411]:INFO:Index route request
+[2021-12-08 19:12:34,672]:INFO:Category "Drama" route request
+[2021-12-08 19:14:27,972]:INFO:Category "Drama" route request
+[2021-12-08 19:15:18,060]:INFO:Category "Drama" route request
+[2021-12-08 19:15:23,906]:INFO:Index route request
+[2021-12-08 19:15:27,943]:INFO:Index route request
+[2021-12-08 19:15:28,209]:INFO:Category "Anthology" route request
+[2021-12-08 19:16:19,794]:INFO:Category "Anthology" route request
+[2021-12-08 19:16:21,512]:INFO:Index route request
+[2021-12-08 19:16:31,146]:INFO:Index route request
+[2021-12-08 19:16:31,410]:INFO:Category "Classic" route request
+[2021-12-08 19:17:16,870]:INFO:Category "Classic" route request
+[2021-12-08 19:17:18,556]:INFO:Index route request
+[2021-12-08 19:17:27,432]:INFO:Index route request
+[2021-12-08 19:17:27,696]:INFO:Category "Crime and Detective" route request
+[2021-12-08 19:25:56,548]:INFO:Index route request
+[2021-12-08 19:26:06,699]:INFO:Index route request
+[2021-12-08 19:26:06,949]:INFO:Category "Crime and Detective" route request
+[2021-12-08 19:26:10,939]:INFO:Index route request
+[2021-12-08 19:26:13,399]:INFO:Add Book route request
+[2021-12-08 19:26:13,400]:WARNING:User "Christian" tried to access the "Add Books" page without admin privilegies
+[2021-12-08 19:26:13,719]:INFO:Index route request
+[2021-12-08 19:26:17,206]:INFO:Logout route request
+[2021-12-08 19:26:17,206]:INFO:User "Christian" logged out
+[2021-12-08 19:26:17,470]:INFO:Index route request
+[2021-12-08 19:26:19,245]:INFO:Login route request
+[2021-12-08 19:26:24,918]:INFO:Login route request
+[2021-12-08 19:26:24,927]:INFO:User "Christian Constantin Pustianu" logged in successfully
+[2021-12-08 19:26:25,244]:INFO:Index route request
+[2021-12-08 19:26:27,623]:INFO:Add Book route request
+[2021-12-08 19:27:17,401]:INFO:Add Book route request
+[2021-12-08 19:27:17,444]:INFO:Admin successfully added book "A Study in Scarlet"
+[2021-12-08 19:27:17,767]:INFO:Add Book route request
+[2021-12-08 19:27:19,306]:INFO:Index route request
+[2021-12-08 19:27:22,349]:INFO:Index route request
+[2021-12-08 19:27:22,614]:INFO:Category "Crime and Detective" route request
+[2021-12-08 19:28:40,532]:INFO:Index route request
+[2021-12-08 19:28:47,164]:INFO:Index route request
+[2021-12-08 19:28:47,500]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:31:42,743]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:31:51,216]:INFO:Index route request
+[2021-12-08 19:32:26,685]:INFO:Index route request
+[2021-12-08 19:32:34,525]:INFO:Index route request
+[2021-12-08 19:32:34,791]:INFO:Category "Fantasy" route request
+[2021-12-08 19:33:28,145]:INFO:Category "Fantasy" route request
+[2021-12-08 19:33:30,035]:INFO:Index route request
+[2021-12-08 19:33:36,478]:INFO:Index route request
+[2021-12-08 19:33:36,729]:INFO:Category "Historical Fiction" route request
+[2021-12-08 19:34:17,496]:INFO:Index route request
+[2021-12-08 19:34:20,127]:INFO:Index route request
+[2021-12-08 19:34:27,774]:INFO:Index route request
+[2021-12-08 19:34:28,039]:INFO:Category "Science Fiction (Sci-Fi)" route request
+[2021-12-08 19:36:35,945]:INFO:Category "Science Fiction (Sci-Fi)" route request
+[2021-12-08 19:36:37,860]:INFO:Index route request
+[2021-12-08 19:40:44,398]:INFO:Index route request
+[2021-12-08 19:42:21,758]:INFO:Basket route request
+[2021-12-08 19:42:23,657]:INFO:Index route request
+[2021-12-08 19:42:26,090]:INFO:Index route request
+[2021-12-08 19:42:26,356]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:42:27,987]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:42:28,036]:INFO:User "Christian Constantin Pustianu" added book "Life of Pi" to basket
+[2021-12-08 19:42:28,252]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:42:29,684]:INFO:Basket route request
+[2021-12-08 19:42:37,803]:INFO:Basket route request
+[2021-12-08 19:42:37,808]:INFO:User "Christian Constantin Pustianu" increased the number of copies for book "Life of Pi" in their basket
+[2021-12-08 19:42:38,155]:INFO:Basket route request
+[2021-12-08 19:43:56,128]:INFO:Basket route request
+[2021-12-08 19:44:00,284]:INFO:Index route request
+[2021-12-08 19:44:02,176]:INFO:Basket route request
+[2021-12-08 19:44:19,249]:INFO:Basket route request
+[2021-12-08 19:44:26,117]:INFO:Basket route request

@@ -9,13 +9,13 @@
 {% if rows > 0 %}
 {% for book in books %}
     <div class="row border border-secondary rounded p-3">
-        <img class="col-2" src="{{ url_for('static', filename=book.photo) }}">
-        <div class="col-3">
+        <img class="col-md-2" src="{{ url_for('static', filename=book.photo) }}">
+        <div class="col-md-3">
             <h3>{{ book.title }}</h3>
             <p>By {{ book.author }}</p>
             <p><strong>Category:</strong> {{ book.category }}</p>
         </div>
-        <div class="col-3">
+        <div class="col-md-3">
             <h4><strong>Price per unit:</strong> £{{ book.price }}</h4>
             {% for user_order in user_orders %}
                 {% if user_order.bookId == book.id %}
@@ -26,9 +26,9 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="col-3">
+        <div class="col-md-3">
             <div class="row">
-                <h2 class="col-2 m-2">Qty:</h2>
+                <h2 class="col-lg-2 m-2">Qty:</h2>
                 <div class="col-1 m-2">
                     <form action="" method="post" name="minus">
                         {{ form.id(value=book.id, hidden=True) }}
@@ -50,7 +50,7 @@
                         <input type="submit" class="btn border-secondary" value="+">
                     </form>
                 </div>
-                <div class="col-1 m-2">
+                <div class="col-lg-1 m-2">
                     <form action="" method="post" name="remove all">
                         {{ form.id(value=book.id, hidden=True) }}
                         {{ form.action(value='remove', hidden=True) }}
@@ -64,10 +64,10 @@
 {% endfor %}
 <div class="row border border-secondary"></div>
 <br>
-<div class="col p-3 border border-secondary rounded" onmouseover="getLocation()">
+<div class="col-sm p-3 border border-secondary rounded" onmouseover="getLocation()">
     <div class="row">
-        <h2 class="col-4">Sub-total: £{{ total }}</h2>
-        <button class="col-7 btn btn-outline-secondary" onclick="writeDistanceToCompany()">Delivery</button>
+        <h2 class="col-sm-4">Sub-total: £{{ total }}</h2>
+        <button class="col-sm-7 btn btn-outline-secondary" onclick="writeDistanceToCompany()">Delivery</button>
     </div>
     <br>
     <div id="distance"></div>

@@ -29,7 +29,7 @@ def index():
 		category = Category.query.get(form.id.data)
 		return redirect(url_for('category', name=category.name))
 	else:
-		return render_template('home.html', title='Home', categories=categories, form=form)
+		return render_template('home.html', title='Home', nr=0, categories=categories, form=form)
 
 @app.route('/category/<name>', methods=['GET', 'POST'])
 def category(name):

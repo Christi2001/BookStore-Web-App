@@ -6,11 +6,11 @@
 <br>
 <form action="" method="post" name="remove all">
     <div class="row">
-        <div class="col-10">
+        <div class="col-sm-10">
             {{ search.title(class_='form-control', placeholder='Search for a book\'s title or author') }}
             {{ search.action(value='search', hidden=True) }}
         </div>
-        <input type="submit" class="col-2 btn btn-outline-primary" value="Search">
+        <input type="submit" class="col-sm-2 btn btn-outline-primary" value="Search">
     </div>
 </form>
 
@@ -20,10 +20,10 @@
     <h2 class="text-center">Search results for "{{ keyword }}"</h2>
     <div class="row">
         {% for book in books %}
-            <div class="col-4 p-4 mb-4">
+            <div class="col-lg-4 p-4 mb-4">
                 <div class="card-deck h-100">
-                    <img class="col-6 card p-0 mr-0" src="{{ url_for('static', filename=book.photo) }}">
-                    <div class="col-6 card p-0 ml-0">
+                    <img class="col-lg-6 card p-0 mr-0" src="{{ url_for('static', filename=book.photo) }}">
+                    <div class="col-lg-6 card p-0 ml-0">
                         <div class="card-body">
                             <h5 class="card-title">{{ book.title }}</h5>
                             <p class="card-text">By {{ book.author }}</p>

@@ -9,10 +9,10 @@
 {% if rows > 0 %}
     <div class="row">
         {% for book in books %}
-            <div class="col-4 p-4 mb-4">
+            <div class="col-lg-4 p-4 mb-4">
                 <div class="card-deck h-100">
-                    <img class="col-6 card p-0 mr-0" src="{{ url_for('static', filename=book.photo) }}">
-                    <div class="col-6 card p-0 ml-0">
+                    <img class="col-lg-6 card p-0 mr-0" src="{{ url_for('static', filename=book.photo) }}">
+                    <div class="col-lg-6 card p-0 ml-0">
                         <div class="card-body">
                             <h5 class="card-title">{{ book.title }}</h5>
                             <p class="card-text">By {{ book.author }}</p>

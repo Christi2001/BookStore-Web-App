@@ -8,7 +8,7 @@
 <br/>
 <div class="row">
 {% for category in categories %}
-        <div class="card mb-4 p-0 col-3">
+        <div class="card mb-4 p-0 col-sm-3">
             <img class="card-img-top h-75" src="{{ url_for('static', filename=category.photo) }}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">{{ category.name }}</h5>
