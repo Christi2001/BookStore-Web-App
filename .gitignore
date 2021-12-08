@@ -2,3 +2,5 @@
 *.pyc
 # database
 *.db
+# logs
+*.log

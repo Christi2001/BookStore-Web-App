@@ -447,3 +447,118 @@
 [2021-12-08 19:44:02,176]:INFO:Basket route request
 [2021-12-08 19:44:19,249]:INFO:Basket route request
 [2021-12-08 19:44:26,117]:INFO:Basket route request
+[2021-12-08 19:49:13,077]:INFO:Index route request
+[2021-12-08 19:49:30,891]:INFO:Index route request
+[2021-12-08 19:49:51,135]:INFO:Index route request
+[2021-12-08 19:50:01,717]:INFO:Index route request
+[2021-12-08 19:50:21,135]:INFO:Index route request
+[2021-12-08 19:50:28,063]:INFO:Index route request
+[2021-12-08 19:50:41,593]:INFO:Index route request
+[2021-12-08 19:50:41,859]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:50:58,332]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:51:00,433]:INFO:Index route request
+[2021-12-08 19:51:14,349]:INFO:Index route request
+[2021-12-08 19:51:20,340]:INFO:Index route request
+[2021-12-08 19:51:23,267]:INFO:Index route request
+[2021-12-08 19:51:23,507]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:51:39,475]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:51:54,457]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:52:32,316]:INFO:Basket route request
+[2021-12-08 19:52:48,972]:INFO:Basket route request
+[2021-12-08 19:52:55,079]:INFO:Basket route request
+[2021-12-08 19:53:01,859]:INFO:Basket route request
+[2021-12-08 19:53:08,462]:INFO:Basket route request
+[2021-12-08 19:53:15,829]:INFO:Basket route request
+[2021-12-08 19:53:22,840]:INFO:Basket route request
+[2021-12-08 19:53:28,126]:INFO:Basket route request
+[2021-12-08 19:53:57,577]:INFO:Basket route request
+[2021-12-08 19:54:03,216]:INFO:Basket route request
+[2021-12-08 19:54:12,493]:INFO:Basket route request
+[2021-12-08 19:54:24,473]:INFO:Basket route request
+[2021-12-08 19:54:33,130]:INFO:Basket route request
+[2021-12-08 19:55:17,085]:INFO:Basket route request
+[2021-12-08 19:55:18,417]:INFO:Empty search route request
+[2021-12-08 19:55:19,681]:INFO:Index route request
+[2021-12-08 19:55:39,508]:INFO:Index route request
+[2021-12-08 19:55:57,292]:INFO:Index route request
+[2021-12-08 19:56:02,860]:INFO:Index route request
+[2021-12-08 19:56:11,261]:INFO:Index route request
+[2021-12-08 19:56:29,032]:INFO:Index route request
+[2021-12-08 19:56:40,149]:INFO:Index route request
+[2021-12-08 19:56:40,413]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:56:57,995]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:57:18,885]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:58:08,855]:INFO:Category "Action and Adventure" route request
+[2021-12-08 19:59:23,609]:INFO:Empty search route request
+[2021-12-08 19:59:25,464]:INFO:Empty search route request
+[2021-12-08 19:59:25,785]:INFO:Search by keyword "a" route request
+[2021-12-08 19:59:35,631]:INFO:Search by keyword "a" route request
+[2021-12-08 19:59:41,302]:INFO:Search by keyword "a" route request
+[2021-12-08 19:59:52,479]:INFO:Search by keyword "a" route request
+[2021-12-08 19:59:58,249]:INFO:Search by keyword "a" route request
+[2021-12-08 20:00:23,951]:INFO:Search by keyword "a" route request
+[2021-12-08 20:00:46,067]:INFO:Index route request
+[2021-12-08 20:00:49,846]:INFO:Search by keyword "a" route request
+[2021-12-08 20:00:58,898]:INFO:Search by keyword "a" route request
+[2021-12-08 20:01:08,548]:INFO:Search by keyword "a" route request
+[2021-12-08 20:01:14,515]:INFO:Search by keyword "a" route request
+[2021-12-08 20:01:25,068]:INFO:Search by keyword "a" route request
+[2021-12-08 20:01:32,804]:INFO:Search by keyword "a" route request
+[2021-12-08 20:01:39,105]:INFO:Search by keyword "a" route request
+[2021-12-08 20:01:39,354]:INFO:Search by keyword "hunger" route request
+[2021-12-08 20:02:27,966]:INFO:Empty search route request
+[2021-12-08 20:02:29,114]:INFO:Add Book route request
+[2021-12-08 20:02:50,613]:INFO:Add Book route request
+[2021-12-08 20:02:53,553]:INFO:Add Book route request
+[2021-12-08 20:02:59,309]:INFO:Add Book route request
+[2021-12-08 20:03:17,131]:INFO:Add Book route request
+[2021-12-08 20:03:21,039]:INFO:Empty search route request
+[2021-12-08 20:03:22,632]:INFO:Profile route request
+[2021-12-08 20:03:35,329]:INFO:Basket route request
+[2021-12-08 20:03:52,897]:INFO:Basket route request
+[2021-12-08 20:04:20,247]:INFO:Basket route request
+[2021-12-08 20:04:30,492]:INFO:Basket route request
+[2021-12-08 20:04:36,229]:INFO:Basket route request
+[2021-12-08 20:04:49,095]:INFO:Basket route request
+[2021-12-08 20:04:57,812]:INFO:Basket route request
+[2021-12-08 20:05:09,719]:INFO:Basket route request
+[2021-12-08 20:05:28,446]:INFO:Basket route request
+[2021-12-08 20:05:42,568]:INFO:Basket route request
+[2021-12-08 20:05:51,913]:INFO:Basket route request
+[2021-12-08 20:06:00,224]:INFO:Basket route request
+[2021-12-08 20:06:05,072]:INFO:Basket route request
+[2021-12-08 20:06:11,361]:INFO:Basket route request
+[2021-12-08 20:06:19,120]:INFO:Basket route request
+[2021-12-08 20:06:32,484]:INFO:Index route request
+[2021-12-08 20:06:37,728]:INFO:Empty search route request
+[2021-12-08 20:06:40,227]:INFO:Empty search route request
+[2021-12-08 20:06:40,556]:INFO:Search by keyword "asd" route request
+[2021-12-08 20:06:42,198]:INFO:Search by keyword "asd" route request
+[2021-12-08 20:06:42,522]:INFO:Search by keyword "a" route request
+[2021-12-08 20:06:48,219]:INFO:Profile route request
+[2021-12-08 20:06:56,808]:INFO:Index route request
+[2021-12-08 20:07:02,713]:INFO:Index route request
+[2021-12-08 20:07:08,078]:INFO:Index route request
+[2021-12-08 20:07:15,443]:INFO:Index route request
+[2021-12-08 20:07:42,387]:INFO:Profile route request
+[2021-12-08 20:07:59,233]:INFO:Profile route request
+[2021-12-08 20:08:22,786]:INFO:Logout route request
+[2021-12-08 20:08:22,786]:INFO:User "Christian Constantin Pustianu" logged out
+[2021-12-08 20:08:23,105]:INFO:Index route request
+[2021-12-08 20:08:26,210]:INFO:Index route request
+[2021-12-08 20:08:26,477]:INFO:Category "Action and Adventure" route request
+[2021-12-08 20:08:28,682]:INFO:Login route request
+[2021-12-08 20:08:38,625]:INFO:Login route request
+[2021-12-08 20:08:49,429]:INFO:Login route request
+[2021-12-08 20:09:12,892]:INFO:Singup route request
+[2021-12-08 20:09:18,742]:INFO:Singup route request
+[2021-12-08 20:09:38,386]:INFO:Index route request
+[2021-12-08 20:09:40,506]:INFO:Empty search route request
+[2021-12-08 20:09:42,458]:INFO:Empty search route request
+[2021-12-08 20:09:42,795]:INFO:Search by keyword "a" route request
+[2021-12-08 20:09:49,493]:INFO:Index route request
+[2021-12-08 20:09:56,779]:INFO:Login route request
+[2021-12-08 20:10:01,779]:INFO:Login route request
+[2021-12-08 20:10:01,789]:INFO:User "Christian Constantin Pustianu" logged in successfully
+[2021-12-08 20:10:02,117]:INFO:Index route request
+[2021-12-08 20:10:04,111]:INFO:Add Book route request
