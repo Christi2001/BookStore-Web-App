@@ -197,7 +197,7 @@ def basket():
 							book.stock = book.stock - order.quantity
 							db.session.delete(order)
 						else:
-							flash("Not enough copies of " + book.title + "in stock! Only " + book.stock + " left!")
+							flash("Not enough copies of " + book.title + "in stock! Only " + str(book.stock) + " left!")
 							logger.error('User "' + current_user.name +
 							 '" tried to buy more books than the number in stock')
 							return redirect('/basket')
